@@ -19,13 +19,7 @@ For the GetUpdates:
 Installation
 ---------
 
-#### composer
-```
-composer require shakibonline/telegrambotphp v0.0.2
-```
-
-#### manually
-
+#### Manual
 
 * Copy Telegram.php into your server and include it in your new bot script
 ```php
@@ -34,6 +28,13 @@ $telegram = new Telegram($bot_id);
 ```
 
 * To enable error log file, also copy TelegramErrorLogger.php in the same directory of Telegram.php file
+
+#### Using Composer
+
+From your project directory, run
+```
+composer require eleirbag89/telegrambotphp
+```
 
 Configuration (WebHook)
 ---------
@@ -79,7 +80,7 @@ $telegram->downloadFile($file["result"]["file_path"], "./my_downloaded_file_on_l
 See update.php or update cowsay.php for the complete example.
 If you wanna see the CowSay Bot in action [add it] (https://telegram.me/cowmooobot).
 
-If you want to use GetUpdates instead of the WebHook you need to call the the `serveUpdate` function inside a for cycle.
+If you want to use GetUpdates instead of the WebHook you need to call the the serveUpdate function inside a for cycle.
 ```php
 $req = $telegram->getUpdates();
 for ($i = 0; $i < $telegram-> UpdateCount(); $i++) {
