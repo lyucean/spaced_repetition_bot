@@ -1,12 +1,12 @@
 
 {
-    "name": "eleirbag89/telegrambotphp",
-    "description": "A very simple PHP Telegram Bot API",
+    "name": "spaced_repetition_bot",
+    "description": "Telegraph bot for spaced repetition",
     "type": "library",
     "authors": [
         {
-            "name": "Gabriele Grillo",
-            "email": "gabry.grillo@alice.it"
+            "name": "lyucean",
+            "email": "lyucean@gmail.com"
         }
     ],
     "license": "MIT",
