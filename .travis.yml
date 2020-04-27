@@ -9,9 +9,9 @@ branches:
 # Environment variables
 env:
   global:
-    - GH_REPO_NAME: TelegramBotPHP
+    - GH_REPO_NAME: spaced_repetition_bot
     - DOXYFILE: $TRAVIS_BUILD_DIR/Doxyfile
-    - GH_REPO_REF: github.com/Eleirbag89/TelegramBotPHP.git
+    - GH_REPO_REF: github.com/lyucean/spaced_repetition_bot.git
 
 # Install dependencies
 addons:
