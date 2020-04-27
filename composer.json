@@ -1,20 +1,22 @@
-
 {
-    "name": "spaced_repetition_bot",
-    "description": "Telegraph bot for spaced repetition",
-    "type": "library",
-    "authors": [
-        {
-            "name": "lyucean",
-            "email": "lyucean@gmail.com"
-        }
-    ],
-    "license": "MIT",
-    "minimum-stability": "alpha",
-    "require": {
-        "php": ">=5.0"
-    },
-    "autoload": {
-        "files": ["Telegram.php", "TelegramErrorLogger.php"]
+  "name": "spaced_repetition_bot",
+  "description": "Telegraph bot for spaced repetition",
+  "type": "library",
+  "authors": [
+    {
+      "name": "lyucean",
+      "email": "lyucean@gmail.com"
     }
+  ],
+  "license": "MIT",
+  "minimum-stability": "alpha",
+  "require": {
+    "php": ">=5.0"
+  },
+  "autoload": {
+    "files": [
+      "Telegram.php",
+      "TelegramErrorLogger.php"
+    ]
+  }
 }
