@@ -1,5 +1,5 @@
 {
-  "name": "spaced_repetition_bot",
+  "name": "lyucean/spaced_repetition_bot",
   "description": "Telegraph bot for spaced repetition",
   "type": "library",
   "authors": [
@@ -11,12 +11,8 @@
   "license": "MIT",
   "minimum-stability": "alpha",
   "require": {
-    "php": ">=5.0"
-  },
-  "autoload": {
-    "files": [
-      "Telegram.php",
-      "TelegramErrorLogger.php"
-    ]
+    "php": ">=5.0",
+    "eleirbag89/telegrambotphp": "^1.3",
+    "robmorgan/phinx": "^0.12.1"
   }
 }
