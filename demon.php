@@ -1,8 +1,6 @@
 <?php
 
-include(__DIR__ . '/vendor/autoload.php');
-include 'config.php';
-include 'data.php';
+require_once __DIR__ . '/vendor/autoload.php';
 
 $hour = date("G");
 $minute = date("i");
@@ -17,8 +15,7 @@ if (7 < $hour && $hour < 21 && $minute == $hour) {
                       ]
     );
 
-    $data = new Data();
-
+    $data = new spacedRepetitionBot\Model\Data();
     $content = array('chat_id' => TELEGRAM_CHAT_ID, 'text' => $data->getContentPrepared(TELEGRAM_CHAT_ID));
     $telegram->sendMessage($content);
 }

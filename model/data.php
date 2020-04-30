@@ -1,12 +1,12 @@
 <?php
 
-/**
- * Class Data
- */
+namespace spacedRepetitionBot\Model;
+
+use MysqliDb;
+
 class Data
 {
 
-    private $list = [];
     private $chat_id;
     private $db;
 
@@ -30,7 +30,7 @@ class Data
         $this->db->where("chat_id", $chat_id);
         $content = $this->db->get("content");
 
-        return !empty($content) ? [array_rand($content)] : [];
+        return !empty($content) ? $content[array_rand($content)]['text'] : 'Список пустой, нечего присылать :(';
     }
 
     public function getChatId()
