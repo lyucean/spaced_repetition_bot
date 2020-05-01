@@ -16,12 +16,13 @@
     "thingengineer/mysqli-database-class": "dev-master"
   },
   "autoload": {
+    "psr-4": {
+      "srbot\\Controller\\": "controller",
+      "srbot\\Model\\": "model"
+    },
     "files": [
-      "app/config.php",
       "helper/debug.php",
-      "model/Data.php",
-      "model/Message.php",
-      "controller/Schedule.php"
+      "app/config.php"
     ]
   },
   "config": {
