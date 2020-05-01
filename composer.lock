@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "58a1da9a0085b12b6e306613d83e3b2b",
+    "content-hash": "eb4a7aecba2b4782219c940e69409e92",
     "packages": [
         {
             "name": "eleirbag89/telegrambotphp",
@@ -98,7 +98,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "7.2.13"
+        "php": "^7"
     },
     "platform-dev": [],
     "plugin-api-version": "1.1.0"

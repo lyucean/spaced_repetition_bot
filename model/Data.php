@@ -1,6 +1,6 @@
 <?php
 
-namespace spacedRepetitionBot\Model;
+namespace srbot\Model;
 
 use MysqliDb;
 

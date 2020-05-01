@@ -11,7 +11,7 @@
   "license": "MIT",
   "minimum-stability": "alpha",
   "require": {
-    "php": "7.3.17",
+    "php": "^7",
     "eleirbag89/telegrambotphp": "^1.3",
     "thingengineer/mysqli-database-class": "dev-master"
   },
@@ -19,7 +19,9 @@
     "files": [
       "app/config.php",
       "helper/debug.php",
-      "model/data.php"
+      "model/Data.php",
+      "model/Message.php",
+      "controller/Schedule.php"
     ]
   },
   "config": {

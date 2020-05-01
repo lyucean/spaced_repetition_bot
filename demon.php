@@ -2,20 +2,11 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-$hour = date("G");
-$minute = date("i");
+use srbot\Controller\Schedule;
 
-if (7 < $hour && $hour < 21 && $minute == $hour) {
-    $telegram = new Telegram(
-        TELEGRAM_TOKEN, true, [
-                          'type' => PROXY_TYPE,
-                          'auth' => PROXY_AUTH,
-                          'url' => PROXY_IP,
-                          'port' => PROXY_PORT,
-                      ]
-    );
+// While we will have everything in one process
 
-    $data = new spacedRepetitionBot\Model\Data();
-    $content = array('chat_id' => TELEGRAM_CHAT_ID, 'text' => $data->getContentPrepared(TELEGRAM_CHAT_ID));
-    $telegram->sendMessage($content);
-}
+// Checking the schedule, whether someone needs to send a message
+(new  Schedule())->check();
+
+// Reply to all messages
