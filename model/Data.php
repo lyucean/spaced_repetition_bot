@@ -6,8 +6,6 @@ use MysqliDb;
 
 class Data
 {
-
-    private $chat_id;
     private $db;
 
     public function __construct()
@@ -30,12 +28,30 @@ class Data
         $this->db->where("chat_id", $chat_id);
         $content = $this->db->get("content");
 
-        return !empty($content) ? $content[array_rand($content)]['text'] : 'Список пустой, нечего присылать :(';
+        // just random text
+        return !empty($content) ? $content[array_rand($content)]['text'] : [];
     }
 
-    public function getChatId()
+    public function set($chat_id)
     {
-        return $this->chat_id;
+        $this->db->where("chat_id", $chat_id);
+        $content = $this->db->get("content");
+
+        // just random text
+        return !empty($content) ? $content[array_rand($content)]['text'] : [];
+    }
+
+    public function getSendingList()
+    {
+        $this->db->where("date_time", Date('Y-m-d H:i:s'), "<=");
+        $this->db->where("status_sent", 0);
+        return $this->db->get("schedule_daily");
+    }
+
+    public function setScheduleDailyStatusSent($schedule_daily_id)
+    {
+        $this->db->where('schedule_daily_id', $schedule_daily_id);
+        $this->db->update('schedule_daily', ['status_sent' => 1]);
     }
 
 //    public function addContent($data)

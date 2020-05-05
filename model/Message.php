@@ -1,8 +1,6 @@
 <?php
 
-
 namespace srbot\Model;
-
 
 use Telegram;
 

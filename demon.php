@@ -10,3 +10,5 @@ use srbot\Controller\Schedule;
 (new  Schedule())->check();
 
 // Reply to all messages
+
+// Let's create a mailing list for the day.

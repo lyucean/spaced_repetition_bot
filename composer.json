@@ -21,7 +21,7 @@
       "srbot\\Model\\": "model"
     },
     "files": [
-      "helper/debug.php",
+      "app/helper.php",
       "app/config.php"
     ]
   },
