@@ -12,3 +12,4 @@ use srbot\Controller\Schedule;
 // Reply to all messages
 
 // Let's create a mailing list for the day.
+(new  Schedule())->generate();

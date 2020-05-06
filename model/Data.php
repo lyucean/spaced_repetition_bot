@@ -32,26 +32,28 @@ class Data
         return !empty($content) ? $content[array_rand($content)]['text'] : [];
     }
 
-    public function set($chat_id)
+    public function getSendingDailyNow()
     {
-        $this->db->where("chat_id", $chat_id);
-        $content = $this->db->get("content");
-
-        // just random text
-        return !empty($content) ? $content[array_rand($content)]['text'] : [];
-    }
-
-    public function getSendingList()
-    {
-        $this->db->where("date_time", Date('Y-m-d H:i:s'), "<=");
+        $this->db->where("date_time", gmdate('Y-m-d H:i:s'), "<=");
         $this->db->where("status_sent", 0);
         return $this->db->get("schedule_daily");
+    }
+
+
+    public function addSendingDailyNow($data)
+    {
+        return $this->db->insert('schedule_daily', $data);
     }
 
     public function setScheduleDailyStatusSent($schedule_daily_id)
     {
         $this->db->where('schedule_daily_id', $schedule_daily_id);
         $this->db->update('schedule_daily', ['status_sent' => 1]);
+    }
+
+    public function getSchedule()
+    {
+        return $this->db->get("schedule");
     }
 
 //    public function addContent($data)

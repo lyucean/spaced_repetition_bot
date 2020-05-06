@@ -2,23 +2,79 @@
 
 namespace srbot\Controller;
 
+use DateTime;
+use Exception;
 use srbot\Model\Data;
 use srbot\Model\Message;
 
 class Schedule
 {
+    private $bd;
+
+    public function __construct()
+    {
+        $this->bd = new Data();
+    }
+
+    /**
+     * Checking to see if it's time for an alert, if it is, it sends it out
+     */
     public function check()
     {
-        $data = new Data();
-
-        foreach ($data->getSendingList() as $item) {
-            $content = $data->getContentPrepared($item['chat_id']);
+        foreach ($this->bd->getSendingDailyNow() as $item) {
+            $content = $this->bd->getContentPrepared($item['chat_id']);
 
             if (!empty($content)) {
                 (new Message)->Send(TELEGRAM_CHAT_ID, $content);
             }
 
-            $data->setScheduleDailyStatusSent($item['schedule_daily_id']);
+            $this->bd->setScheduleDailyStatusSent($item['schedule_daily_id']);
+        }
+    }
+
+    /**
+     * Generates the date and time of the alert in mysql format with an offset from the time zone
+     * @param int $hour_start
+     * @param int $hour_end
+     * @param int $time_zone_offset
+     * @return string
+     * @throws Exception
+     */
+    private function createDateTimeForSchedule(int $hour_start, int $hour_end, int $time_zone_offset): string
+    {
+        $hour_offset = rand(0, $hour_end - $hour_start) + $time_zone_offset;
+        $date_starting = gmdate('Y-m-d ' . $hour_start . ':' . rand(10, 59) . ':s');
+        $date = new DateTime($date_starting);
+        $date->modify('+' . $hour_offset . ' hours');
+        return $date->format('Y-m-d H:i:s');
+    }
+
+    /**
+     * Fills out the schedule of notifications for the current day
+     * @throws Exception
+     */
+    public function generate()
+    {
+        // every day we will create a schedule for today
+        if ('0' != gmdate("G") || '01' != gmdate("i")) {
+            die;
+        }
+
+        foreach ($this->bd->getSchedule() as $item) {
+            // how many notifications to send per day
+            for ($i = 0; $i < $item['quantity']; $i++) {
+                $this->bd->addSendingDailyNow(
+                    [
+                        'chat_id' => $item['chat_id'],
+                        'date_time' => $this->createDateTimeForSchedule(
+                            $item['hour_start'],
+                            $item['hour_end'],
+                            $item['time_zone_offset']
+                        ),
+                        'status_sent' => 0,
+                    ]
+                );
+            }
         }
     }
 }
