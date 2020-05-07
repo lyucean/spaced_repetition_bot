@@ -25,7 +25,7 @@ class Schedule
             $content = $this->bd->getContentPrepared($item['chat_id']);
 
             if (!empty($content)) {
-                (new Message)->Send(TELEGRAM_CHAT_ID, $content);
+                (new Message)->SendText(TELEGRAM_CHAT_ID, $content);
             }
 
             $this->bd->setScheduleDailyStatusSent($item['schedule_daily_id']);

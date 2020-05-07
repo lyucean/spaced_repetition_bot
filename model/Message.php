@@ -22,7 +22,7 @@ class Message
         return $this;
     }
 
-    public function Send($chat_id, $text)
+    public function SendText($chat_id, $text)
     {
         $content = array('chat_id' => $chat_id, 'text' => $text);
         $this->telegram->sendMessage($content);
