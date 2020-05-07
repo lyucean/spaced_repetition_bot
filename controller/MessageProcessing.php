@@ -53,7 +53,7 @@ class MessageProcessing
                             'text' => $text,
                             'message_id' => $message_id,
                             'rating' => 0,
-                            'show' => 0,
+                            'show' => 1,
                         ]
                     );
 

@@ -42,12 +42,11 @@ class Schedule
      * @return string
      * @throws Exception
      */
-    private function createDateTimeForSchedule(int $hour_start, int $hour_end, int $time_zone_offset): string
+    public function createDateTimeForSchedule(int $hour_start, int $hour_end, int $time_zone_offset): string
     {
-        $hour_offset = rand(0, $hour_end - $hour_start) + $time_zone_offset;
-        $date_starting = gmdate('Y-m-d ' . $hour_start . ':' . rand(10, 59) . ':s');
+        $date_starting = gmdate('Y-m-d ' . rand($hour_start, $hour_end) . ':' . rand(10, 59) . ':s');
         $date = new DateTime($date_starting);
-        $date->modify('+' . $hour_offset . ' hours');
+        $date->modify('+' . (-1) * $time_zone_offset . ' hours');
         return $date->format('Y-m-d H:i:s');
     }
 
