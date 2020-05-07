@@ -21,6 +21,8 @@ class Data
                 'charset' => 'utf8'
             )
         );
+
+        return $this;
     }
 
     public function getContentPrepared($chat_id)
@@ -29,7 +31,7 @@ class Data
         $content = $this->db->get("content");
 
         // just random text
-        return !empty($content) ? $content[array_rand($content)]['text'] : [];
+        return !empty($content) ? $content[array_rand($content)] : [];
     }
 
     public function getSendingDailyNow()
@@ -56,27 +58,16 @@ class Data
         return $this->db->get("schedule");
     }
 
-//    public function addContent($data)
-//    {
-//
-//        $this->db->where ("chat_id", 123);
-//        $content = $this->db->get ("content");
-//
-//        $data = Array (
-//            'chat_id' => $data['chat_id'],
-//            'active' => true,
-//            'firstName' => 'John',
-//            'lastName' => 'Doe',
-//            'date_added' => $db->now(),
-//            'date_reminder' => $db->now(),
-//        );
-//
-//        $id = $db->insert ('users', $data);
-//
-//        if (!$id){
-//            echo 'insert failed: ' . $db->getLastError();
-//        }
-//
-//        return $id
-//    }
+    public function addContent($data)
+    {
+        $data['date_added'] = $this->db->now();
+        $data['date_reminder'] = $this->db->now();
+        return $this->db->insert('content', $data);
+    }
+
+    public function addDateReminderContent($content_id)
+    {
+        $this->db->where('content_id', $content_id);
+        $this->db->update('content', ['date_reminder' => $this->db->now()]);
+    }
 }

@@ -25,7 +25,9 @@ class Schedule
             $content = $this->bd->getContentPrepared($item['chat_id']);
 
             if (!empty($content)) {
-                (new Message)->SendText(TELEGRAM_CHAT_ID, $content);
+                (new Message)->SendText(TELEGRAM_CHAT_ID, $content['text']);
+
+                $this->bd->addDateReminderContent($content['content_id']);
             }
 
             $this->bd->setScheduleDailyStatusSent($item['schedule_daily_id']);

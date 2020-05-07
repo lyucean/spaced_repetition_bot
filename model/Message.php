@@ -18,8 +18,6 @@ class Message
                               'port' => PROXY_PORT,
                           ]
         );
-
-        return $this;
     }
 
     public function SendText($chat_id, $text)
