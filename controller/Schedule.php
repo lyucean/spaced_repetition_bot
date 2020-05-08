@@ -9,11 +9,11 @@ use srbot\Model\Message;
 
 class Schedule
 {
-    private $bd;
+    private $db;
 
     public function __construct()
     {
-        $this->bd = new Data();
+        $this->db = new Data();
     }
 
     /**
@@ -21,16 +21,16 @@ class Schedule
      */
     public function check()
     {
-        foreach ($this->bd->getSendingDailyNow() as $item) {
-            $content = $this->bd->getContentPrepared($item['chat_id']);
+        foreach ($this->db->getSendingDailyNow() as $item) {
+            $content = $this->db->getContentPrepared($item['chat_id']);
 
             if (!empty($content)) {
                 (new Message)->SendText(TELEGRAM_CHAT_ID, $content['text']);
 
-                $this->bd->addDateReminderContent($content['content_id']);
+                $this->db->addDateReminderContent($content['content_id']);
             }
 
-            $this->bd->setScheduleDailyStatusSent($item['schedule_daily_id']);
+            $this->db->setScheduleDailyStatusSent($item['schedule_daily_id']);
         }
     }
 
@@ -61,10 +61,10 @@ class Schedule
             die;
         }
 
-        foreach ($this->bd->getSchedule() as $item) {
+        foreach ($this->db->getSchedule() as $item) {
             // how many notifications to send per day
             for ($i = 0; $i < $item['quantity']; $i++) {
-                $this->bd->addSendingDailyNow(
+                $this->db->addSendingDailyNow(
                     [
                         'chat_id' => $item['chat_id'],
                         'date_time' => $this->createDateTimeForSchedule(

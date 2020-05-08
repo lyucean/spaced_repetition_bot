@@ -14,7 +14,7 @@ use Telegram;
 class MessageProcessing
 {
     private $telegram;
-    private $bd;
+    private $db;
 
     public function __construct()
     {
@@ -27,7 +27,7 @@ class MessageProcessing
                           ]
         );
 
-        $this->bd = new Data();
+        $this->db = new Data();
     }
 
     public function getMessage()
@@ -47,7 +47,7 @@ class MessageProcessing
                     $content = ['chat_id' => $chat_id, 'text' => $reply];
                     $this->telegram->sendMessage($content);
                 } elseif (!empty($text)) {
-                    $this->bd->addContent(
+                    $this->db->addContent(
                         [
                             'chat_id' => $chat_id,
                             'text' => $text,
