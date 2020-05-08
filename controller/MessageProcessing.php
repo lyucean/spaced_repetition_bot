@@ -4,7 +4,7 @@
 namespace srbot\Controller;
 
 use srbot\Model\Data;
-use Telegram;
+use srbot\Model\Telegram;
 
 /**
  * Responsible for the processing of all incoming messages from the user
@@ -18,15 +18,7 @@ class MessageProcessing
 
     public function __construct()
     {
-        $this->telegram = new Telegram(
-            TELEGRAM_TOKEN, true, [
-                              'type' => PROXY_TYPE,
-                              'auth' => PROXY_AUTH,
-                              'url' => PROXY_IP,
-                              'port' => PROXY_PORT,
-                          ]
-        );
-
+        $this->telegram = new Telegram();
         $this->db = new Data();
     }
 

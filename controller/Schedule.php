@@ -5,14 +5,16 @@ namespace srbot\Controller;
 use DateTime;
 use Exception;
 use srbot\Model\Data;
-use srbot\Model\Message;
+use srbot\Model\Telegram;
 
 class Schedule
 {
+    private $telegram;
     private $db;
 
     public function __construct()
     {
+        $this->telegram = new Telegram();
         $this->db = new Data();
     }
 
@@ -25,7 +27,9 @@ class Schedule
             $content = $this->db->getContentPrepared($item['chat_id']);
 
             if (!empty($content)) {
-                (new Message)->SendText(TELEGRAM_CHAT_ID, $content['text']);
+                $this->telegram->sendMessage(
+                    ['chat_id' => $item['chat_id'], 'text' => $content['text']]
+                );
 
                 $this->db->addDateReminderContent($content['content_id']);
             }
@@ -52,7 +56,6 @@ class Schedule
 
     /**
      * Fills out the schedule of notifications for the current day
-     * @throws Exception
      */
     public function generate()
     {
