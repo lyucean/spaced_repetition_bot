@@ -8,10 +8,10 @@ use srbot\Model\Telegram;
 
 /**
  * Responsible for the processing of all incoming messages from the user
- * Class MessageProcessing
+ * Class Processing
  * @package srbot\Controller
  */
-class MessageProcessing
+class Processing
 {
     private $telegram;
     private $db;
@@ -22,7 +22,7 @@ class MessageProcessing
         $this->db = new Data();
     }
 
-    public function getMessage()
+    public function checkMessage()
     {
         // Get all the new updates and set the new correct update_id
         $this->telegram->getUpdates(0, 10);

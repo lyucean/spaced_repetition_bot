@@ -1,8 +1,9 @@
 <?php
 
 require_once __DIR__ . '/vendor/autoload.php';
+//require_once __DIR__ . '/app/core.php';
 
-use srbot\Controller\MessageProcessing;
+use srbot\Controller\Processing;
 use srbot\Controller\Schedule;
 
 // While we will have everything in one process
@@ -11,7 +12,13 @@ use srbot\Controller\Schedule;
 (new  Schedule())->check();
 
 // Reply to all messages
-(new  MessageProcessing())->getMessage();
+$minute = gmdate("i");
+$processing = new  Processing();
+while ($minute == gmdate("i")) {
+    echo gmdate("i:s"), PHP_EOL;
+    $processing->checkMessage();
+    sleep(10);
+}
 
 // Let's create a mailing list for the day.
 (new  Schedule())->generate();
