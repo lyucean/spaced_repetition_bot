@@ -13,7 +13,8 @@
   "require": {
     "php": "^7",
     "eleirbag89/telegrambotphp": "^1.3",
-    "thingengineer/mysqli-database-class": "dev-master"
+    "thingengineer/mysqli-database-class": "dev-master",
+    "ext-mbstring": "*"
   },
   "autoload": {
     "psr-4": {

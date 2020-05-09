@@ -38,6 +38,46 @@ class Processing
                     $reply = 'Hey, the bot is in development, it is too early to use it :)';
                     $content = ['chat_id' => $chat_id, 'text' => $reply];
                     $this->telegram->sendMessage($content);
+                } elseif ($text == '/test') {
+                    $reply = 'test' . gmdate("h:i:s");
+                    $content = ['chat_id' => $chat_id, 'text' => $reply];
+                    $this->telegram->sendMessage($content);
+                } elseif (mb_strtolower($text) == 'согласен') {
+                    $reply = '🤘';
+                    $content = ['chat_id' => $chat_id, 'text' => $reply];
+                    $this->telegram->sendMessage($content);
+                } elseif ($text == '/keyboard') {
+                    if ($this->telegram->messageFromGroup()) {
+                        $reply = 'Chat Group';
+                    } else {
+                        $reply = 'Private Chat';
+                    }
+                    // Create option for the custom keyboard. Array of array string
+                    $option = [['Add', 'Menu']];
+                    // Get the keyboard
+                    $keyb = $this->telegram->buildKeyBoard($option);
+                    $content = ['chat_id' => $chat_id, 'reply_markup' => $keyb, 'text' => $reply];
+                    $this->telegram->sendMessage($content);
+                } elseif ($text == '/keyhide') {
+                    $keyb = $this->telegram->buildForceReply($selective = true);
+                    $content = ['chat_id' => $chat_id, 'reply_markup' => $keyb, 'text' => '43'];
+                    $this->telegram->sendMessage($content);
+                } elseif ($text == '/inlinekeyboard') {
+                    // Shows the Inline Keyboard and Trigger a callback on a button press
+                    $option = [
+                        [
+                            $this->telegram->buildInlineKeyBoardButton('Add', $url = '', $callback_data = '/add'),
+                            $this->telegram->buildInlineKeyBoardButton('Menu', $url = '', $callback_data = '2'),
+                        ],
+                    ];
+
+                    $keyb = $this->telegram->buildInlineKeyBoard($option);
+                    $content = [
+                        'chat_id' => $chat_id,
+                        'reply_markup' => $keyb,
+                        'text' => 'This is an InlineKeyboard Test with Callbacks'
+                    ];
+                    $this->telegram->sendMessage($content);
                 } elseif (!empty($text)) {
                     $this->db->addContent(
                         [
