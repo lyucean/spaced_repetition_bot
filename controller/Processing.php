@@ -58,6 +58,8 @@ class Processing
                     $reply = 'Hey, the bot is in development, it is too early to use it :)';
                     $content = ['chat_id' => $chat_id, 'text' => $reply];
                     $this->telegram->sendMessage($content);
+                } elseif ($text == '/now') {
+                    (new  Schedule())->sendContent($chat_id);
                 } elseif (!empty($text)) {
                     $content_id = $this->db->addContent(
                         [

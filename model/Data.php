@@ -85,6 +85,12 @@ class Data
     public function addDateReminderContent($content_id)
     {
         $this->db->where('content_id', $content_id);
-        $this->db->update('content', ['date_reminder' => $this->db->now()]);
+        $this->db->update(
+            'content',
+            [
+                'date_reminder' => $this->db->now(),
+                'rating' => $this->db->inc()
+            ]
+        );
     }
 }

@@ -24,17 +24,21 @@ class Schedule
     public function check()
     {
         foreach ($this->db->getSendingDailyNow() as $item) {
-            $content = $this->db->getContentPrepared($item['chat_id']);
-
-            if (!empty($content)) {
-                $this->telegram->sendMessage(
-                    ['chat_id' => $item['chat_id'], 'text' => $content['text']]
-                );
-
-                $this->db->addDateReminderContent($content['content_id']);
-            }
-
+            $this->sendContent($item['chat_id']);
             $this->db->setScheduleDailyStatusSent($item['schedule_daily_id']);
+        }
+    }
+
+    public function sendContent($chat_id)
+    {
+        $content = $this->db->getContentPrepared($chat_id);
+
+        if (!empty($content)) {
+            $this->telegram->sendMessage(
+                ['chat_id' => $chat_id, 'text' => $content['text']]
+            );
+
+            $this->db->addDateReminderContent($content['content_id']);
         }
     }
 
