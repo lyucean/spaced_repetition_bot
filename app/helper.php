@@ -6,6 +6,7 @@ if (!function_exists('ddf')) {
     {
         echo '<pre>' . PHP_EOL;
         print_r($var);
+        flush();
         if ($die) {
             die;
         }

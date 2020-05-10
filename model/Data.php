@@ -2,6 +2,7 @@
 
 namespace srbot\Model;
 
+use Exception;
 use MysqliDb;
 
 class Data
@@ -41,7 +42,6 @@ class Data
         return $this->db->get("schedule_daily");
     }
 
-
     public function addSendingDailyNow($data)
     {
         return $this->db->insert('schedule_daily', $data);
@@ -58,6 +58,23 @@ class Data
         return $this->db->get("schedule");
     }
 
+    /**
+     * @param $content_id
+     * @return bool
+     * @throws Exception
+     */
+    public function deleteContent($content_id)
+    {
+        $this->db->where('content_id', $content_id);
+        return $this->db->delete('content');
+    }
+
+    /**
+     * Adds content, returns content_id
+     * @param $data
+     * @return int content_id
+     * @throws Exception
+     */
     public function addContent($data)
     {
         $data['date_added'] = $this->db->now();
