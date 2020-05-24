@@ -29,6 +29,7 @@ class Data
     public function getContentPrepared($chat_id)
     {
         $this->db->where("chat_id", $chat_id);
+        $this->db->orderBy("date_reminder", "asc");
         $content = $this->db->get("content");
 
         // just random text
