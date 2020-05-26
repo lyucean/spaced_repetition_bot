@@ -1,11 +1,11 @@
 <?php
 
-namespace srbot\Model;
+namespace srbot\core;
 
 use Exception;
 use MysqliDb;
 
-class Data
+class DB
 {
     private $db;
 

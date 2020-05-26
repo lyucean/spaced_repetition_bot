@@ -1,23 +1,13 @@
 <?php
 
-namespace srbot\Controller;
+namespace srbot\model;
 
 use DateTime;
 use Exception;
-use srbot\Model\Data;
-use srbot\Model\Telegram;
+use srbot\core\Model;
 
-class Schedule
+class Schedule extends Model
 {
-    private $telegram;
-    private $db;
-
-    public function __construct()
-    {
-        $this->telegram = new Telegram();
-        $this->db = new Data();
-    }
-
     /**
      * Checking to see if it's time for an alert, if it is, it sends it out
      */

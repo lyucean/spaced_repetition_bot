@@ -1,7 +1,7 @@
 <?php
 
 
-namespace srbot\Model;
+namespace srbot\core;
 
 
 class Telegram extends \Telegram

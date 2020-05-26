@@ -18,8 +18,8 @@
   },
   "autoload": {
     "psr-4": {
-      "srbot\\Controller\\": "controller",
-      "srbot\\Model\\": "model"
+      "srbot\\model\\": "model",
+      "srbot\\core\\": "core"
     },
     "files": [
       "app/helper.php",

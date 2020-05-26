@@ -1,27 +1,17 @@
 <?php
 
 
-namespace srbot\Controller;
+namespace srbot\model;
 
-use srbot\Model\Data;
-use srbot\Model\Telegram;
+use srbot\core\Model;
 
 /**
  * Responsible for the processing of all incoming messages from the user
  * Class Processing
  * @package srbot\Controller
  */
-class Processing
+class Processing extends Model
 {
-    private $telegram;
-    private $db;
-
-    public function __construct()
-    {
-        $this->telegram = new Telegram();
-        $this->db = new Data();
-    }
-
     public function checkMessage()
     {
         // Get all the new updates and set the new correct update_id
