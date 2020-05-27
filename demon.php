@@ -13,9 +13,6 @@ use srbot\model\Schedule;
 // Checking the schedule, whether someone needs to send a message
 (new  Schedule())->check();
 
-// Let's create a mailing list for the day.
-(new  Schedule())->generate();
-
 // Reply to all messages, once per second
 $minute = gmdate("i");
 $processing = new  Processing();
@@ -24,3 +21,7 @@ while ($minute == gmdate("i")) {
     $processing->checkMessage();
     sleep(1);
 }
+
+// Let's create a mailing list for the day.
+(new  Schedule())->generate();
+

@@ -23,6 +23,18 @@ class Processing extends Model
             $chat_id = $this->telegram->ChatID();
             $message_id = $this->telegram->MessageID();
 
+            // Tracking activity
+            $this->db->addChatHistory(
+                [
+                    'chat_id' => $this->telegram->ChatID(),
+                    'first_name' => $this->telegram->FirstName(),
+                    'last_name' => $this->telegram->LastName(),
+                    'user_name' => $this->telegram->Username(),
+                    'user_id' => $this->telegram->UserID(),
+                    'text' => $this->telegram->Text()
+                ]
+            );
+
             if ($this->telegram->getUpdateType() == 'callback_query') {
                 $param = parse_url($text);
                 switch ($param['path']) {

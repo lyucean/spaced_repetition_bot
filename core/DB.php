@@ -94,4 +94,10 @@ class DB
             ]
         );
     }
+
+    public function addChatHistory($data)
+    {
+        $data['date_added'] = $this->db->now();
+        $this->db->insert('chat_history', $data);
+    }
 }

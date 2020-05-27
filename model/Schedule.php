@@ -55,7 +55,7 @@ class Schedule extends Model
     {
         // every day we will create a schedule for today
         if ('0' != gmdate("G") || '01' != gmdate("i")) {
-            die;
+            return;
         }
 
         foreach ($this->db->getSchedule() as $item) {
