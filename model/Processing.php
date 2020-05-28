@@ -12,10 +12,31 @@ use srbot\core\Model;
  */
 class Processing extends Model
 {
+    const MESSAGE_LIMIT_PER_REQUEST = 10;
+
+    public function __construct()
+    {
+        parent::__construct();
+        // Get all the new updates and set the new correct update_id
+        $this->telegram->getUpdates(0, self::MESSAGE_LIMIT_PER_REQUEST);
+    }
+
+    private function trackingActivity()
+    {
+        $this->db->addChatHistory(
+            [
+                'chat_id' => $this->telegram->ChatID(),
+                'first_name' => $this->telegram->FirstName(),
+                'last_name' => $this->telegram->LastName(),
+                'user_name' => $this->telegram->Username(),
+                'user_id' => $this->telegram->UserID(),
+                'text' => $this->telegram->Text()
+            ]
+        );
+    }
+
     public function checkMessage()
     {
-        // Get all the new updates and set the new correct update_id
-        $this->telegram->getUpdates(0, 10);
         for ($i = 0; $i < $this->telegram->UpdateCount(); $i++) {
             // You NEED to call serveUpdate before accessing the values of message in Telegram Class
             $this->telegram->serveUpdate($i);
@@ -24,16 +45,7 @@ class Processing extends Model
             $message_id = $this->telegram->MessageID();
 
             // Tracking activity
-            $this->db->addChatHistory(
-                [
-                    'chat_id' => $this->telegram->ChatID(),
-                    'first_name' => $this->telegram->FirstName(),
-                    'last_name' => $this->telegram->LastName(),
-                    'user_name' => $this->telegram->Username(),
-                    'user_id' => $this->telegram->UserID(),
-                    'text' => $this->telegram->Text()
-                ]
-            );
+            $this->trackingActivity();
 
             if ($this->telegram->getUpdateType() == 'callback_query') {
                 $param = parse_url($text);
