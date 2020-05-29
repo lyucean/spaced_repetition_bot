@@ -14,13 +14,6 @@ class Processing extends Model
 {
     const MESSAGE_LIMIT_PER_REQUEST = 10;
 
-    public function __construct()
-    {
-        parent::__construct();
-        // Get all the new updates and set the new correct update_id
-        $this->telegram->getUpdates(0, self::MESSAGE_LIMIT_PER_REQUEST);
-    }
-
     private function trackingActivity()
     {
         $this->db->addChatHistory(
@@ -37,6 +30,8 @@ class Processing extends Model
 
     public function checkMessage()
     {
+        // Get all the new updates and set the new correct update_id before each call
+        $this->telegram->getUpdates(0, self::MESSAGE_LIMIT_PER_REQUEST);
         for ($i = 0; $i < $this->telegram->UpdateCount(); $i++) {
             // You NEED to call serveUpdate before accessing the values of message in Telegram Class
             $this->telegram->serveUpdate($i);
