@@ -1,8 +1,13 @@
 <?php
 
-class Command
+namespace srbot\core;
+
+use Exception;
+use ReflectionClass;
+
+class Controller
 {
-    const BASE_COMMAND_DIR = '../command/';
+    const BASE_DIR = '../controller/';
     private $route;
     private $method = 'index';
 
@@ -12,7 +17,7 @@ class Command
 
         // Break apart the route
         while ($parts) {
-            $file = self::BASE_COMMAND_DIR . implode('/', $parts) . '.php';
+            $file = self::BASE_DIR . implode('/', $parts) . '.php';
 
             if (is_file($file)) {
                 $this->route = implode('/', $parts);
@@ -30,14 +35,14 @@ class Command
             return new Exception('Error: Calls to magic methods are not allowed!');
         }
 
-        $file = self::BASE_COMMAND_DIR . $this->route . '.php';
-        $class = 'Command' . preg_replace('/[^a-zA-Z0-9]/', '', $this->route);
+        $file = self::BASE_DIR . $this->route . '.php';
+        $class = 'Controller' . preg_replace('/[^a-zA-Z0-9]/', '', $this->route);
 
         // Initialize the class
         if (is_file($file)) {
             include_once($file);
 
-            $command = new $class($registry);
+            $controller = new $class($registry);
         } else {
             return new Exception('Error: Could not call ' . $this->route . '/' . $this->method . '!');
         }
@@ -47,7 +52,7 @@ class Command
         if ($reflection->hasMethod($this->method) && $reflection->getMethod(
                 $this->method
             )->getNumberOfRequiredParameters() <= count($args)) {
-            return call_user_func_array(array($command, $this->method), $args);
+            return call_user_func_array(array($controller, $this->method), $args);
         } else {
             return new Exception('Error: Could not call ' . $this->route . '/' . $this->method . '!');
         }

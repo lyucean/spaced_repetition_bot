@@ -1,6 +1,6 @@
 <?php
 
-namespace srbot\command;
+namespace srbot\controller;
 
 use srbot\core\Model;
 
