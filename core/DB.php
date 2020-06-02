@@ -100,4 +100,12 @@ class DB
         $data['date_added'] = $this->db->now();
         $this->db->insert('chat_history', $data);
     }
+
+    public function getLastRoute($chat_id)
+    {
+        $this->db->where("chat_id", $chat_id);
+        $this->db->orderBy("date_added", "desc");
+
+        return $this->db->getOne("route", 'controller');
+    }
 }
