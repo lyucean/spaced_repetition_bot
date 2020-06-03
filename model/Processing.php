@@ -125,7 +125,7 @@ class Processing extends Model
             $this->trackingActivity();
 
             // If it's an independent command, it has the highest priority.
-            if (mb_substr($text, 0, 1, 'UTF-8') != '/') {
+            if (mb_substr($text, 0, 1, 'UTF-8') == '/') {
                 $action = new Action($text);
                 $action->execute($this->telegram);
                 continue;
