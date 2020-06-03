@@ -5,11 +5,6 @@ require_once __DIR__ . '/vendor/autoload.php';
 use srbot\model\Processing;
 use srbot\model\Schedule;
 
-// While we will have everything in one process
-//if($_SERVER['USERNAME'] != 'lyucean'){
-//    die;
-//}
-
 // Checking the schedule, whether someone needs to send a message
 (new  Schedule())->check();
 

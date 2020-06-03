@@ -19,7 +19,8 @@
   "autoload": {
     "psr-4": {
       "srbot\\model\\": "model",
-      "srbot\\core\\": "core"
+      "srbot\\core\\": "core",
+      "srbot\\command\\": "command"
     },
     "files": [
       "app/helper.php",

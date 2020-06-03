@@ -4,22 +4,27 @@ namespace srbot\core;
 
 use Exception;
 use ReflectionClass;
+use srbot;
 
-class Controller
+//use srbot\command;
+
+class Action
 {
-    const BASE_DIR = '../controller/';
     private $route;
     private $method = 'index';
 
     public function __construct($route)
     {
+        $route = parse_url($route)['path'];
+        $route = strtolower($route);
         $parts = explode('/', preg_replace('/[^a-zA-Z0-9_\/]/', '', (string)$route));
+        $parts = array_map('ucfirst', $parts);
 
         // Break apart the route
         while ($parts) {
-            $file = self::BASE_DIR . implode('/', $parts) . '.php';
+            $file = DIR_COMMAND . ucfirst(implode('/', $parts)) . '.php';
 
-            if (is_file($file)) {
+            if (!empty($parts) && is_file($file)) {
                 $this->route = implode('/', $parts);
                 break;
             } else {
@@ -35,13 +40,14 @@ class Controller
             return new Exception('Error: Calls to magic methods are not allowed!');
         }
 
-        $file = self::BASE_DIR . $this->route . '.php';
-        $class = 'Controller' . preg_replace('/[^a-zA-Z0-9]/', '', $this->route);
+        $file = DIR_COMMAND . $this->route . '.php';
+        $class = preg_replace('/[^a-zA-Z0-9]/', '', $this->route);
 
         // Initialize the class
         if (is_file($file)) {
             include_once($file);
 
+            $class = "srbot\\command\\$class";
             $controller = new $class($registry);
         } else {
             return new Exception('Error: Could not call ' . $this->route . '/' . $this->method . '!');
@@ -56,5 +62,15 @@ class Controller
         } else {
             return new Exception('Error: Could not call ' . $this->route . '/' . $this->method . '!');
         }
+    }
+
+    public function getRoute()
+    {
+        return $this->route;
+    }
+
+    public function getMethod()
+    {
+        return $this->method;
     }
 }

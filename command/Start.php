@@ -1,12 +1,11 @@
 <?php
 
-namespace srbot\controller;
+namespace srbot\command;
 
-use srbot\core\Model;
-
-class Start extends Model
+class Start
 {
     public function index()
     {
+        echo null;
     }
 }

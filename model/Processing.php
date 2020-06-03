@@ -3,13 +3,13 @@
 
 namespace srbot\model;
 
-use srbot\core\Controller;
+use srbot\core\Action;
 use srbot\core\Model;
 
 /**
  * Responsible for the processing of all incoming messages from the user
  * Class Processing
- * @package srbot\Controller
+ * @package srbot\Action
  */
 class Processing extends Model
 {
@@ -126,7 +126,7 @@ class Processing extends Model
 
             // If it's an independent command, it has the highest priority.
             if (mb_substr($text, 0, 1, 'UTF-8') != '/') {
-                $action = new Controller(parse_url($text)['path']);
+                $action = new Action($text);
                 $action->execute($this->telegram);
                 continue;
             }
