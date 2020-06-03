@@ -33,7 +33,7 @@ class Action
         }
     }
 
-    public function execute($registry, array $args = array())
+    public function execute($registry)
     {
         // Stop any magical methods being called
         if (substr($this->method, 0, 2) == '__') {
@@ -55,10 +55,8 @@ class Action
 
         $reflection = new ReflectionClass($class);
 
-        if ($reflection->hasMethod($this->method) && $reflection->getMethod(
-                $this->method
-            )->getNumberOfRequiredParameters() <= count($args)) {
-            return call_user_func_array(array($controller, $this->method), $args);
+        if ($reflection->hasMethod($this->method)) {
+            return call_user_func_array(array($controller, $this->method), []);
         } else {
             return new Exception('Error: Could not call ' . $this->route . '/' . $this->method . '!');
         }
