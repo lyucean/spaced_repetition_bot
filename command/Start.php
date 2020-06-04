@@ -15,8 +15,8 @@ class Start
 
     public function index()
     {
-        $reply = "Hey, the bot is in development, it's too early to use it :) \n
-                  I will write to you how it will be ready.";
+        $reply = "Hey, the bot is in development, it's too early to use it :) " .
+            "\n I will write to you how it will be ready.";
         $content = ['chat_id' => $this->chat_id, 'text' => $reply];
         $this->telegram->sendMessage($content);
     }
