@@ -2,11 +2,9 @@
 
 namespace srbot\core;
 
-use Exception;
 use ReflectionClass;
 use srbot;
-
-//use srbot\command;
+use srbot\command\Error;
 
 class Action
 {
@@ -37,7 +35,8 @@ class Action
     {
         // Stop any magical methods being called
         if (substr($this->method, 0, 2) == '__') {
-            return new Exception('Error: Calls to magic methods are not allowed!');
+            return (new Error($registry))
+                ->index('Error: Calls to magic methods are not allowed!');
         }
 
         $file = DIR_COMMAND . $this->route . '.php';
@@ -50,7 +49,8 @@ class Action
             $class = "srbot\\command\\$class";
             $controller = new $class($registry);
         } else {
-            return new Exception('Error: Could not call ' . $this->route . '/' . $this->method . '!');
+            return (new Error($registry))
+                ->index('Error: Could not call ' . $this->route . '/' . $this->method . '!');
         }
 
         $reflection = new ReflectionClass($class);
@@ -58,7 +58,8 @@ class Action
         if ($reflection->hasMethod($this->method)) {
             return call_user_func_array(array($controller, $this->method), []);
         } else {
-            return new Exception('Error: Could not call ' . $this->route . '/' . $this->method . '!');
+            return (new Error($registry))
+                ->index('Error: Could not call ' . $this->route . '/' . $this->method . '!');
         }
     }
 

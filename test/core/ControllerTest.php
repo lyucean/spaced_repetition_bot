@@ -26,14 +26,16 @@ class ControllerTest extends TestCase
 
     public function testInitMethod()
     {
+        $method = md5(rand(10, 100));
+
         $this->assertSame(
-            'Delete',
-            (new Action('/StarT/delete'))->getMethod()
+            ucfirst($method),
+            (new Action("/StarT/{$method}"))->getMethod()
         );
 
         $this->assertSame(
-            'Delete',
-            (new Action('/StarT/delete/all?id=123'))->getMethod()
+            ucfirst($method),
+            (new Action("/StarT/{$method}/all?id=123"))->getMethod()
         );
     }
 
@@ -50,5 +52,15 @@ class ControllerTest extends TestCase
         }
 
         $this->assertTrue(true);
+    }
+
+    public function testErrorRoute()
+    {
+        $this->assertNull(
+            (new Action('/' . md5(rand(10, 100))))->getRoute()
+        );
+        $this->assertNull(
+            (new Action('/__call'))->getRoute()
+        );
     }
 }

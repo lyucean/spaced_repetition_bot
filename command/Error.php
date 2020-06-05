@@ -1,8 +1,11 @@
 <?php
 
+
 namespace srbot\command;
 
-class Start
+use Exception;
+
+class Error
 {
     private $telegram;
     private $chat_id;
@@ -13,15 +16,15 @@ class Start
         $this->chat_id = $this->telegram->ChatID();
     }
 
-    public function index()
+    public function index($message)
     {
-        $reply = "Hey, the bot is in development, it's too early to use it :) " .
-            "\n I will write to you how it will be ready.";
         $this->telegram->sendMessage(
             [
                 'chat_id' => $this->chat_id,
-                'text' => $reply
+                'text' => $message
             ]
         );
+
+        return new Exception($message);
     }
 }
