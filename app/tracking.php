@@ -2,9 +2,9 @@
 
 $notifier = new Airbrake\Notifier(
     array(
-        'projectId' => 276279,
+        'projectId' => AIR_BRAKE_PROJECT_ID,
         "environment" => ENVIRONMENT,
-        'projectKey' => '351c192a20c2a278a0961e173bc5698e'
+        'projectKey' => AIR_BRAKE_PROJECT_KEY
     )
 );
 

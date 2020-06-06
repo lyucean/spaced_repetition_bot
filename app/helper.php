@@ -2,6 +2,10 @@
 
 // debug display function
 if (!function_exists('ddf')) {
+    /**
+     * @param $var
+     * @param bool $die
+     */
     function ddf($var, $die = true)
     {
         echo '<pre>' . PHP_EOL;
@@ -15,6 +19,10 @@ if (!function_exists('ddf')) {
 
 // get query param
 if (!function_exists('get_var_query')) {
+    /**
+     * @param string $string
+     * @return array
+     */
     function get_var_query(string $string)
     {
         $string = parse_url($string);
