@@ -44,9 +44,15 @@ class ControllerTest extends TestCase
         try {
             $action = new Action('/start');
 
-            // Create a stub for a class Telegram.
-            $Telegram = $this->createMock(Telegram::class);
-            $action->execute($Telegram);
+            $mock_telegram = $this->getMockBuilder(Telegram::class)
+                ->onlyMethods(['ChatID'])
+                ->getMock();
+
+            $mock_telegram->expects($this->once())
+                ->method('ChatID')
+                ->willReturn(TELEGRAM_TEST_CHAT_ID);
+
+            $action->execute($mock_telegram);
         } catch (Exception $e) {
             $this->fail($e);
         }

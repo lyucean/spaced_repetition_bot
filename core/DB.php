@@ -7,7 +7,7 @@ use MysqliDb;
 
 class DB
 {
-    private $db;
+    private MysqliDb $db;
 
     public function __construct()
     {

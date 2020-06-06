@@ -13,7 +13,7 @@ $minute = gmdate("i");
 $processing = new  Processing();
 while ($minute == gmdate("i")) {
     echo gmdate("i:s"), PHP_EOL;
-    $processing->checkMessage();
+    $processing->check();
     sleep(1);
 }
 

@@ -2,7 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 
-class ControllerTest extends TestCase
+class HelperTest extends TestCase
 {
     public function testGetVarQuery()
     {

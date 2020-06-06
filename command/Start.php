@@ -2,10 +2,12 @@
 
 namespace srbot\command;
 
+use srbot\core\Telegram;
+
 class Start
 {
-    private $telegram;
-    private $chat_id;
+    private Telegram $telegram;
+    private int $chat_id = 0;
 
     public function __construct($telegram)
     {

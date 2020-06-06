@@ -5,8 +5,8 @@ namespace srbot\core;
 
 class Model
 {
-    public $telegram;
-    public $db;
+    public Telegram $telegram;
+    public DB $db;
 
     public function __construct()
     {

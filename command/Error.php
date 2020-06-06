@@ -4,10 +4,11 @@
 namespace srbot\command;
 
 use Exception;
+use srbot\core\Telegram;
 
 class Error
 {
-    private $telegram;
+    private Telegram $telegram;
     private $chat_id;
 
     public function __construct($telegram)
@@ -25,7 +26,6 @@ class Error
             ]
         );
 
-        new Exception($message);
-        exit();
+        throw new Exception($message);
     }
 }

@@ -31,12 +31,11 @@ class Action
         }
     }
 
-    public function execute($registry)
+    public function execute($registry): void
     {
         // Stop any magical methods being called
         if (substr($this->method, 0, 2) == '__') {
-            return (new Error($registry))
-                ->send('Calls to magic methods are not allowed!');
+            (new Error($registry))->send('Calls to magic methods are not allowed!');
         }
 
         $file = DIR_COMMAND . $this->route . '.php';
@@ -44,22 +43,21 @@ class Action
 
         // Initialize the class
         if (is_file($file)) {
+
             include_once($file);
 
             $class = "srbot\\command\\$class";
             $controller = new $class($registry);
         } else {
-            return (new Error($registry))
-                ->send('Could not call ' . $this->route . '/' . $this->method . '!');
+            (new Error($registry))->send('Could not call ' . $this->route . '/' . $this->method . '!');
         }
 
         $reflection = new ReflectionClass($class);
 
         if ($reflection->hasMethod($this->method)) {
-            return call_user_func_array(array($controller, $this->method), []);
+            call_user_func_array(array($controller, $this->method), []);
         } else {
-            return (new Error($registry))
-                ->send('Could not call ' . $this->route . '/' . $this->method . '!');
+            (new Error($registry))->send('Could not call ' . $this->route . '/' . $this->method . '!');
         }
     }
 

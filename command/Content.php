@@ -9,10 +9,10 @@ use srbot\core\Telegram;
 class Content
 {
     private Telegram $telegram;
-    private int $chat_id;
+    private int $chat_id = 0;
     private string $text;
-    private int $content_id;
-    private int $message_id;
+    private int $content_id = 0;
+    private int $message_id = 0;
     private DB $db;
 
     public function __construct($telegram)

@@ -95,11 +95,11 @@ class Processing extends Model
                         ],
                     ];
 
-                    $keyb = $this->telegram->buildInlineKeyBoard($option);
+                    $kerb = $this->telegram->buildInlineKeyBoard($option);
 
                     $content = [
                         'chat_id' => $chat_id,
-                        'reply_markup' => $keyb,
+                        'reply_markup' => $kerb,
                         'text' => 'Saved 🙂 ID:' . $content_id
                     ];
                     $this->telegram->sendMessage($content);

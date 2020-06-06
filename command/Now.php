@@ -3,12 +3,13 @@
 
 namespace srbot\command;
 
+use srbot\core\Telegram;
 use srbot\model\Schedule;
 
 class Now
 {
-    private $telegram;
-    private $chat_id;
+    private Telegram $telegram;
+    private int $chat_id;
 
     public function __construct($telegram)
     {
