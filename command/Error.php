@@ -25,6 +25,7 @@ class Error
             ]
         );
 
-        return new Exception($message);
+        new Exception($message);
+        exit();
     }
 }

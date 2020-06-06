@@ -3,7 +3,6 @@
 namespace srbot\command;
 
 
-use Exception;
 use srbot\core\DB;
 use srbot\core\Telegram;
 
@@ -68,8 +67,7 @@ class Content
         $param = get_var_query($this->text);
 
         if (empty($param['content_id'])) {
-            return (new Error($this->telegram))
-                ->send('I did not find content_id!');
+            (new Error($this->telegram))->send('I did not find content_id!');
         }
 
         $this->content_id = $param['content_id'];
@@ -80,13 +78,7 @@ class Content
             $reply = 'I did not find content_id';
         }
 
-        try {
-            $this->db->deleteContent($this->content_id);
-        } catch (Exception $e) {
-            return (new Error($this->telegram))
-                ->send('I couldn\'t delete the entry! ID:' . $this->content_id);
-        }
-
+        $this->db->deleteContent($this->content_id);
         $content = ['chat_id' => $this->chat_id, 'text' => $reply];
         $this->telegram->sendMessage($content);
     }
