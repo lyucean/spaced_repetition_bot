@@ -16,12 +16,12 @@ class Error
         $this->chat_id = $this->telegram->ChatID();
     }
 
-    public function index($message)
+    public function send($message)
     {
         $this->telegram->sendMessage(
             [
                 'chat_id' => $this->chat_id,
-                'text' => $message
+                'text' => 'Error: ' . $message
             ]
         );
 
