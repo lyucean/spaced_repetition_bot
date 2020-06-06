@@ -23,7 +23,7 @@ class ErrorTest extends TestCase
 
             $action = new Error($Telegram);
 
-            $action->index('Error test!');
+            $action->send('Error test!');
         } catch (Exception $e) {
             $this->fail($e);
         }
