@@ -10,7 +10,7 @@ class Content
 {
     private Telegram $telegram;
     private int $chat_id = 0;
-    private string $text;
+    private string $text = '';
     private int $content_id = 0;
     private int $message_id = 0;
     private DB $db;
@@ -20,7 +20,7 @@ class Content
         $this->telegram = $telegram;
         $this->text = $this->telegram->Text();
         $this->chat_id = $this->telegram->ChatID();
-        $this->chat_id = $this->telegram->MessageID();
+        $this->message_id = $this->telegram->MessageID();
         $this->db = new DB();
     }
 
@@ -57,7 +57,7 @@ class Content
         $content = [
             'chat_id' => $this->chat_id,
             'reply_markup' => $this->telegram->buildInlineKeyBoard($option),
-            'text' => 'I saved it 🙂'
+            'text' => 'I saved it 🙂 №' . $this->content_id
         ];
         $this->telegram->sendMessage($content);
     }
@@ -73,10 +73,6 @@ class Content
         $this->content_id = $param['content_id'];
 
         $reply = 'Deleted! ID:' . $this->content_id;
-
-        if (empty($query['content_id'])) {
-            $reply = 'I did not find content_id';
-        }
 
         $this->db->deleteContent($this->content_id);
         $content = ['chat_id' => $this->chat_id, 'text' => $reply];
