@@ -36,7 +36,7 @@ class Action
         // Stop any magical methods being called
         if (substr($this->method, 0, 2) == '__') {
             return (new Error($registry))
-                ->index('Error: Calls to magic methods are not allowed!');
+                ->send('Calls to magic methods are not allowed!');
         }
 
         $file = DIR_COMMAND . $this->route . '.php';
@@ -50,7 +50,7 @@ class Action
             $controller = new $class($registry);
         } else {
             return (new Error($registry))
-                ->index('Error: Could not call ' . $this->route . '/' . $this->method . '!');
+                ->send('Could not call ' . $this->route . '/' . $this->method . '!');
         }
 
         $reflection = new ReflectionClass($class);
@@ -59,7 +59,7 @@ class Action
             return call_user_func_array(array($controller, $this->method), []);
         } else {
             return (new Error($registry))
-                ->index('Error: Could not call ' . $this->route . '/' . $this->method . '!');
+                ->send('Could not call ' . $this->route . '/' . $this->method . '!');
         }
     }
 
