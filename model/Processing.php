@@ -3,6 +3,7 @@
 
 namespace srbot\model;
 
+use srbot\command\Content;
 use srbot\core\Action;
 use srbot\core\Model;
 
@@ -138,6 +139,7 @@ class Processing extends Model
             }
 
             //All that remains is sent to the controller by default
+            (new Content($this->telegram))->add();
             continue;
         }
     }
