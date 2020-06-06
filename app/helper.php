@@ -12,3 +12,19 @@ if (!function_exists('ddf')) {
         }
     }
 }
+
+// get query param
+if (!function_exists('get_var_query')) {
+    function get_var_query(string $string)
+    {
+        $string = parse_url($string);
+
+        if (empty($string['query'])) {
+            return [];
+        }
+
+        parse_str($string['query'], $query);
+
+        return $query;
+    }
+}
