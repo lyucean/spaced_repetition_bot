@@ -5,7 +5,7 @@ namespace srbot\core;
 use Exception;
 use PHPUnit\Framework\TestCase;
 
-class ControllerTest extends TestCase
+class ActionTest extends TestCase
 {
     public function testInitRoute()
     {
