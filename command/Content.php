@@ -82,7 +82,10 @@ class Content
 
         $reply = 'Deleted! ID:' . $this->content_id;
 
-        $this->db->deleteContent($this->content_id);
+        if (!$this->db->deleteContent($this->content_id)) {
+            $reply = 'This content has already been removed!';
+        }
+
         $content = ['chat_id' => $this->chat_id, 'text' => $reply];
         $this->telegram->sendMessage($content);
     }
