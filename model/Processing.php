@@ -21,7 +21,7 @@ class Processing extends Model
     {
         // Get all the new updates and set the new correct update_id before each call
         $updates = $this->telegram->getUpdates(0, self::MESSAGE_LIMIT_PER_REQUEST);
-        if (empty($updates['result'])) {
+        if (!array_key_exists('result', $updates) || empty($updates['result'])) {
             return;
         }
         for ($i = 0; $i < (int)$this->telegram->UpdateCount(); $i++) {
