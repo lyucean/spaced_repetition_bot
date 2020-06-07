@@ -4,6 +4,7 @@
 namespace srbot\model;
 
 use srbot\command\Content;
+use srbot\command\Error;
 use srbot\core\Action;
 use srbot\core\Model;
 
@@ -19,10 +20,19 @@ class Processing extends Model
     public function check()
     {
         // Get all the new updates and set the new correct update_id before each call
-        $this->telegram->getUpdates(0, self::MESSAGE_LIMIT_PER_REQUEST);
-        for ($i = 0; $i < $this->telegram->UpdateCount(); $i++) {
+        $updates = $this->telegram->getUpdates(0, self::MESSAGE_LIMIT_PER_REQUEST);
+        if (empty($updates['result'])) {
+            return;
+        }
+        for ($i = 0; $i < (int)$this->telegram->UpdateCount(); $i++) {
             // You NEED to call serveUpdate before accessing the values of message in Telegram Class
             $this->telegram->serveUpdate($i);
+
+
+            if (!in_array($this->telegram->getUpdateType(), ['message', 'callback_query', 'inline_query'])) {
+                (new Error($this->telegram))->send('I don\'t know how to work with this type of message!');
+            }
+
             $text = $this->telegram->Text();
             $chat_id = $this->telegram->ChatID();
 
@@ -33,8 +43,8 @@ class Processing extends Model
                     'first_name' => $this->telegram->FirstName(),
                     'last_name' => $this->telegram->LastName(),
                     'user_name' => $this->telegram->Username(),
-                    'user_id' => $this->telegram->UserID(),
-                    'text' => $this->telegram->Text()
+                    'user_id' => $chat_id,
+                    'text' => $text
                 ]
             );
 

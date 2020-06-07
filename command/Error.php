@@ -17,7 +17,7 @@ class Error
         $this->chat_id = $this->telegram->ChatID();
     }
 
-    public function send($message)
+    public function send($message, $throw = true)
     {
         $this->telegram->sendMessage(
             [
@@ -26,6 +26,9 @@ class Error
             ]
         );
 
-        throw new Exception($message);
+        if ($throw) {
+            $message = '[' . $this->telegram->getUpdateType() . '] ' . $message;
+            throw new Exception($message);
+        }
     }
 }

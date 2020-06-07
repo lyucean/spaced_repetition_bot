@@ -10,7 +10,6 @@ class Content
 {
     private Telegram $telegram;
     private int $chat_id = 0;
-    private string $text = '';
     private int $content_id = 0;
     private int $message_id = 0;
     private DB $db;
@@ -18,7 +17,6 @@ class Content
     public function __construct($telegram)
     {
         $this->telegram = $telegram;
-        $this->text = $this->telegram->Text();
         $this->chat_id = $this->telegram->ChatID();
         $this->message_id = $this->telegram->MessageID();
         $this->db = new DB();
@@ -33,10 +31,15 @@ class Content
 
     public function add()
     {
+        if ('message' != $this->telegram->getUpdateType()) {
+            (new Error($this->telegram))->send('This is not a message!', false);
+            return;
+        }
+
         $this->content_id = $this->db->addContent(
             [
                 'chat_id' => $this->chat_id,
-                'text' => $this->text,
+                'text' => $this->telegram->Text(),
                 'message_id' => $this->message_id,
                 'rating' => 0,
                 'show' => 1,
@@ -64,7 +67,12 @@ class Content
 
     public function cancel()
     {
-        $param = get_var_query($this->text);
+        if ('callback_query' != $this->telegram->getUpdateType()) {
+            (new Error($this->telegram))->send('This is not a callback query!', false);
+            return;
+        }
+
+        $param = get_var_query($this->telegram->Text());
 
         if (empty($param['content_id'])) {
             (new Error($this->telegram))->send('I did not find content_id!');
