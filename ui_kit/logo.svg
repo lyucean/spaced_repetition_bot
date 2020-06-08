@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!-- Generator: Gravit.io -->
+<svg xmlns="http://www.w3.org/2000/svg" style="isolation:isolate"
+     viewBox="0 0 2000 2000" width="2000pt" height="2000pt">
+    <defs>
+        <clipPath id="_clipPath_X1MJmtdjdYVONqaAuEt9R0va5fBmmVWO">
+            <rect width="2000" height="2000"/>
+        </clipPath>
+    </defs>
+    <g clip-path="url(#_clipPath_X1MJmtdjdYVONqaAuEt9R0va5fBmmVWO)">
+        <rect width="2000" height="2000" style="fill:rgb(58,4,218)"/>
+        <rect x="-96" y="1444" width="2096" height="556" transform="matrix(1,0,0,1,0,0)" fill="rgb(255,255,255)"/>
+        <rect x="0" y="-140" width="1140" height="1292" transform="matrix(1,0,0,1,0,0)" fill="rgb(253,114,30)"/>
+        <rect x="0" y="896" width="736" height="1420" transform="matrix(1,0,0,1,0,0)" fill="rgb(255,184,31)"/>
+        <circle cx="1000.0000000000006" cy="1000.0000000000001" r="828"
+                fill="rgb(62,3,232)"/>
+        <text transform="matrix(1,0,0,1,368,733.36)"
+              style="font-family:'Asap';font-weight:700;font-size:350px;font-style:normal;fill:#ffffff;stroke:none;">
+            spaced
+        </text>
+        <text transform="matrix(1,0,0,1,368,1094.35)"
+              style="font-family:'Asap';font-weight:700;font-size:350px;font-style:normal;fill:#ffffff;stroke:none;">
+            repetition
+        </text>
+        <text transform="matrix(1,0,0,1,368,1455.34)"
+              style="font-family:'Asap';font-weight:700;font-size:350px;font-style:normal;fill:#ffffff;stroke:none;">bot
+        </text>
+    </g>
+</svg>
