@@ -20,9 +20,7 @@ class Action
 
         // Break apart the route
         while ($parts) {
-            $file = DIR_COMMAND . ucfirst(implode('/', $parts)) . '.php';
-
-            if (!empty($parts) && is_file($file)) {
+            if (!empty($parts)) {
                 $this->route = implode('/', $parts);
                 break;
             } else {
@@ -43,7 +41,7 @@ class Action
 
         // Initialize the class
         if (!is_file($file)) {
-            (new Error($registry))->send('Could not call ' . $this->route . '/' . $this->method . '!');
+            (new Error($registry))->send('Could not call command ' . strtolower($this->route) . '!');
         }
 
         include_once($file);
