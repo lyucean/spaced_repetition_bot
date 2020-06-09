@@ -9,17 +9,19 @@ class ActionTest extends TestCase
 {
     public function testInitRoute()
     {
+        $route = md5(rand(10, 100));
+
         $this->assertSame(
-            '/Start',
-            (new Action('/start'))->getRoute()
+            $route,
+            (new Action('/' . $route))->getRoute()
         );
 
         $this->assertSame(
-            '/Start',
+            'Start',
             (new Action('/start/delete'))->getRoute()
         );
         $this->assertSame(
-            '/Start',
+            'Start',
             (new Action('/Start/delete'))->getRoute()
         );
     }
@@ -58,15 +60,5 @@ class ActionTest extends TestCase
         }
 
         $this->assertTrue(true);
-    }
-
-    public function testErrorRoute()
-    {
-        $this->assertNull(
-            (new Action('/' . md5(rand(10, 100))))->getRoute()
-        );
-        $this->assertNull(
-            (new Action('/__call'))->getRoute()
-        );
     }
 }

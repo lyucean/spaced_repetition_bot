@@ -18,14 +18,14 @@ class Action
         $parts = explode('/', preg_replace('/[^a-zA-Z0-9_\/]/', '', (string)$route));
         $parts = array_map('ucfirst', $parts);
 
-        // Break apart the route
-        while ($parts) {
-            if (!empty($parts)) {
-                $this->route = implode('/', $parts);
-                break;
-            } else {
-                $this->method = array_pop($parts);
-            }
+        // this is route
+        if (!empty($parts[1])) {
+            $this->route = ucfirst(strtolower($parts[1]));
+        }
+
+        // this is method
+        if (!empty($parts[2])) {
+            $this->method = ucfirst(strtolower($parts[2]));
         }
     }
 
@@ -41,7 +41,7 @@ class Action
 
         // Initialize the class
         if (!is_file($file)) {
-            (new Error($registry))->send('Could not call command ' . strtolower($this->route) . '!');
+            (new Error($registry))->send('Could not call command /' . strtolower($this->route) . '!');
         }
 
         include_once($file);
@@ -52,7 +52,7 @@ class Action
         $reflection = new ReflectionClass($class);
 
         if (!$reflection->hasMethod($this->method)) {
-            (new Error($registry))->send('Could not call ' . $this->route . '/' . $this->method . '!');
+            (new Error($registry))->send('Could not call command ' . $this->route . '/' . $this->method . '!');
         }
 
         call_user_func_array(array($command, $this->method), []);
