@@ -58,7 +58,7 @@ class Schedule extends Model
             return;
         }
 
-        foreach ($this->db->getSchedule() as $item) {
+        foreach ($this->db->getSchedules() as $item) {
             // how many notifications to send per day
             for ($i = 0; $i < $item['quantity']; $i++) {
                 $this->db->addSendingDailyNow(

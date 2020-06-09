@@ -26,16 +26,7 @@ class DB
         return $this;
     }
 
-    public function getContentPrepared($chat_id)
-    {
-        $this->db->where("chat_id", $chat_id);
-        $this->db->orderBy("date_reminder", "asc");
-        $content = $this->db->get("content");
-
-        // just random text
-        return !empty($content) ? $content[array_rand($content)] : [];
-    }
-
+    // SendingDaily ---------------------------------------------------
     public function getSendingDailyNow()
     {
         $this->db->where("date_time", gmdate('Y-m-d H:i:s'), "<=");
@@ -54,9 +45,48 @@ class DB
         $this->db->update('schedule_daily', ['status_sent' => 1]);
     }
 
-    public function getSchedule()
+
+    // Schedule ---------------------------------------------------
+    public function getSchedules()
     {
         return $this->db->get("schedule");
+    }
+
+    public function getSchedule($chat_id)
+    {
+        $this->db->where("chat_id", $chat_id);
+        return $this->db->getOne("schedule");
+    }
+
+    public function setSchedule($chat_id, $data)
+    {
+        if (!empty($data['quantity'])) {
+            $change['quantity'] = (int)$data['quantity'];
+        }
+
+        if (!empty($data['time_zone_offset'])) {
+            $change['time_zone_offset'] = (int)$data['time_zone_offset'];
+        }
+
+        if (empty($change)) {
+            return;
+        }
+
+        $change['chat_id'] = $chat_id;
+        $change['date_modified'] = $this->db->now();
+
+        $this->db->replace('schedule', $change);
+    }
+
+    // Content ----------------------------------------------------
+    public function getContentPrepared($chat_id)
+    {
+        $this->db->where("chat_id", $chat_id);
+        $this->db->orderBy("date_reminder", "asc");
+        $content = $this->db->get("content");
+
+        // just random text
+        return !empty($content) ? $content[array_rand($content)] : [];
     }
 
     /**
@@ -83,6 +113,11 @@ class DB
         return $this->db->insert('content', $data);
     }
 
+    /**
+     * update date reminder and rating for Content
+     * @param $content_id
+     * @throws Exception
+     */
     public function addDateReminderContent($content_id)
     {
         $this->db->where('content_id', $content_id);
@@ -95,6 +130,7 @@ class DB
         );
     }
 
+    // ChatHistory ------------------------------------------------
     public function addChatHistory($data)
     {
         $data['date_added'] = $this->db->now();
