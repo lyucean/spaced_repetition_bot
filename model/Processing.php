@@ -50,18 +50,28 @@ class Processing extends Model
 
             // If it's an independent command, it has the highest priority.
             if (mb_substr($text, 0, 1, 'UTF-8') == '/') {
+                // Clear command_waiting
+                $this->db->cleanWaitingCommand($chat_id);
+
+                // Let's look for our command
                 $action = new Action($text);
                 $action->execute($this->telegram);
                 continue;
             }
 
-            // If this message, then check if the controller is waiting
-            $waiting = $this->db->getLastRoute($chat_id);
-            if (!empty($waiting['controller'])) {
+            // If this message, then check if the command is waiting
+            $waiting = $this->db->getWaitingCommand($chat_id);
+            if (!empty($waiting['command'])) {
+                // Clear command_waiting
+                $this->db->cleanWaitingCommand($chat_id);
+
+                // Let's look for our command_waiting
+                $action = new Action($waiting['command']);
+                $action->execute($this->telegram);
                 continue;
             }
 
-            //All that remains is sent to the controller by default
+            // All that remains is sent to the controller by default
             (new Content($this->telegram))->add();
             continue;
         }

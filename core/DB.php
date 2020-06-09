@@ -101,11 +101,28 @@ class DB
         $this->db->insert('chat_history', $data);
     }
 
-    public function getLastRoute($chat_id)
+    // WaitingCommand ---------------------------------------------
+    public function getWaitingCommand($chat_id)
     {
         $this->db->where("chat_id", $chat_id);
-        $this->db->orderBy("date_added", "desc");
+        return $this->db->getOne("command_waiting", 'command');
+    }
 
-        return $this->db->getOne("route", 'controller');
+    public function cleanWaitingCommand($chat_id)
+    {
+        $this->db->where("chat_id", $chat_id);
+        return $this->db->delete('command_waiting');
+    }
+
+    public function setWaitingCommand($chat_id, $command)
+    {
+        $this->db->replace(
+            'command_waiting',
+            [
+                'chat_id' => $chat_id,
+                'date_added' => $this->db->now(),
+                'command' => $this->db->escape($command)
+            ]
+        );
     }
 }
