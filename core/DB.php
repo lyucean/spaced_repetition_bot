@@ -68,6 +68,14 @@ class DB
             $change['time_zone_offset'] = (int)$data['time_zone_offset'];
         }
 
+        if (!empty($data['hour_start'])) {
+            $change['hour_start'] = (int)$data['hour_start'];
+        }
+
+        if (!empty($data['hour_end'])) {
+            $change['hour_end'] = (int)$data['hour_end'];
+        }
+
         if (empty($change)) {
             return;
         }

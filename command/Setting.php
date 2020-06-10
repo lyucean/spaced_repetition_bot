@@ -11,6 +11,7 @@ class Setting
     private Telegram $telegram;
     private int $chat_id;
     private DB $db;
+    private array $error = [];
 
     public function __construct($telegram)
     {
@@ -68,18 +69,18 @@ class Setting
         $this->telegram->sendMessage(
             [
                 'chat_id' => $this->chat_id,
-                'text' => 'Enter how many messages to send you per day [max ' . MAXIMUM_OF_MESSAGES_PER_DAY . ']'
+                'text' => 'Enter how many messages to send you per day [max ' . MAXIMUM_OF_MESSAGES_PER_DAY . '].'
             ]
         );
     }
 
     public function set_number()
     {
-        $number = (int)$this->telegram->Text();
+        $quantity = (int)$this->telegram->Text();
 
-        if ($number < 0 || MAXIMUM_OF_MESSAGES_PER_DAY < $number) {
+        if ($quantity < 1 || MAXIMUM_OF_MESSAGES_PER_DAY < $quantity) {
             (new Error($this->telegram))->send(
-                'I am waiting for a number from 0 to ' . MAXIMUM_OF_MESSAGES_PER_DAY,
+                'I am waiting for a number from 1 to ' . MAXIMUM_OF_MESSAGES_PER_DAY,
                 false
             );
             // return the command on hold;
@@ -87,12 +88,12 @@ class Setting
             return;
         }
 
-        $this->db->setSchedule($this->chat_id, ['quantity' => $number]);
+        $this->db->setSchedule($this->chat_id, ['quantity' => $quantity]);
 
         $this->telegram->sendMessage(
             [
                 'chat_id' => $this->chat_id,
-                'text' => 'Save: ' . $number . ' per day'
+                'text' => 'Save: ' . $quantity . ' ' . (1 == $quantity ? 'message' : 'messages') . ' every day.'
             ]
         );
     }
@@ -105,8 +106,8 @@ class Setting
         $this->telegram->sendMessage(
             [
                 'chat_id' => $this->chat_id,
-                'text' => 'Enter your time zone offset [number only, eg -3 or +2]'
-//                    . "\n" . '[wiki/Time_zone](https://en.wikipedia.org/wiki/Time_zone)'
+                'text' => 'Enter your time zone offset [number only, eg -3 or +2].'
+                    . "\n" . 'If you don’t know what it is, then google "Time zone in your city".'
             ]
         );
     }
@@ -130,16 +131,67 @@ class Setting
         $this->telegram->sendMessage(
             [
                 'chat_id' => $this->chat_id,
-                'text' => 'Save offset: ' . $offset
+                'text' => 'Save time zone offset: ' . (0 < $offset ? '+' : '') . $offset
             ]
         );
     }
 
     public function change_interval()
     {
+        //Put the command on hold;
+        $this->db->setWaitingCommand($this->chat_id, '/setting/set_interval');
+
+        $this->telegram->sendMessage(
+            [
+                'chat_id' => $this->chat_id,
+                'text' => 'Enter the interval at which it is convenient for you to receive messages [eg 9-20 or 10-12].'
+            ]
+        );
     }
+
+    private function validate_interval($hour_start, $hour_end)
+    {
+        if ($hour_start < 1 || 24 < $hour_start) {
+            $this->error[] = 'I am waiting for a first number from 1 to 24.';
+        }
+        if ($hour_end < 1 || 24 < $hour_end) {
+            $this->error[] = 'I am waiting for a second number from 1 to 24.';
+        }
+        if ($hour_end < $hour_start) {
+            $this->error[] = 'First number cannot be larger than the second.';
+        }
+
+        return count($this->error) == 0;
+    }
+
 
     public function set_interval()
     {
+        $interval = $this->telegram->Text();
+
+        $hour_start = (int)stristr($interval, '-', true);
+        $hour_end = (int)ltrim(stristr($interval, '-'), " -");
+
+        if (!$this->validate_interval($hour_start, $hour_end)) {
+            (new Error($this->telegram))->send(implode("\n", $this->error), false);
+            // return the command on hold;
+            $this->db->setWaitingCommand($this->chat_id, '/setting/set_interval');
+            return;
+        }
+
+        $this->db->setSchedule(
+            $this->chat_id,
+            [
+                'hour_start' => $hour_start,
+                'hour_end' => $hour_end,
+            ]
+        );
+
+        $this->telegram->sendMessage(
+            [
+                'chat_id' => $this->chat_id,
+                'text' => 'Save interval: ' . $hour_start . ':00-' . $hour_end . ':00'
+            ]
+        );
     }
 }

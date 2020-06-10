@@ -26,7 +26,9 @@ class Error
             ]
         );
 
-        if ($throw) {
+        // on dev always throw an Exception for testing
+        if (OC_ENV_DEV ||
+            $throw) {
             $message = '[' . $this->telegram->getUpdateType() . '] ' . $message;
             throw new Exception($message);
         }
