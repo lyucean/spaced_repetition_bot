@@ -33,7 +33,7 @@ class Action
     {
         // Stop any magical methods being called
         if (substr($this->method, 0, 2) == '__') {
-            (new Error($registry))->send('Calls to magic methods are not allowed!');
+            (new Error($registry))->send('Calls to magic methods are not allowed.');
         }
 
         $file = DIR_COMMAND . $this->route . '.php';

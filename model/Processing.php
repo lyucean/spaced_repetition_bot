@@ -30,7 +30,7 @@ class Processing extends Model
 
 
             if (!in_array($this->telegram->getUpdateType(), ['message', 'callback_query', 'inline_query'])) {
-                (new Error($this->telegram))->send('I don\'t know how to work with this type of message!');
+                (new Error($this->telegram))->send('I don\'t know how to work with this type of message.');
             }
 
             $text = $this->telegram->Text();
