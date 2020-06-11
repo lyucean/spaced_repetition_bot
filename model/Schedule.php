@@ -4,31 +4,21 @@ namespace srbot\model;
 
 use DateTime;
 use Exception;
+use srbot\command\Content;
 use srbot\core\Model;
 
 class Schedule extends Model
 {
+
     /**
      * Checking to see if it's time for an alert, if it is, it sends it out
      */
     public function check()
     {
         foreach ($this->db->getSendingDailyNow() as $item) {
-            $this->sendContent($item['chat_id']);
+            $this->telegram->setChatID($item['chat_id']);
+            (new Content($this->telegram))->sendContent();
             $this->db->setScheduleDailyStatusSent($item['schedule_daily_id']);
-        }
-    }
-
-    public function sendContent($chat_id)
-    {
-        $content = $this->db->getContentPrepared($chat_id);
-
-        if (!empty($content)) {
-            $this->telegram->sendMessage(
-                ['chat_id' => $chat_id, 'text' => $content['text']]
-            );
-
-            $this->db->addDateReminderContent($content['content_id']);
         }
     }
 

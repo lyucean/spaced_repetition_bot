@@ -12,14 +12,12 @@ class Content
     private Telegram $telegram;
     private int $chat_id = 0;
     private int $content_id = 0;
-    private int $message_id = 0;
     private DB $db;
 
     public function __construct($telegram)
     {
         $this->telegram = $telegram;
         $this->chat_id = $this->telegram->ChatID();
-        $this->message_id = $this->telegram->MessageID();
         $this->db = new DB();
     }
 
@@ -41,7 +39,7 @@ class Content
             [
                 'chat_id' => $this->chat_id,
                 'text' => $this->telegram->Text(),
-                'message_id' => $this->message_id,
+                'message_id' => $this->telegram->MessageID(),
                 'rating' => 0,
                 'show' => 1,
             ]
