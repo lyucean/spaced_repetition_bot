@@ -3,6 +3,7 @@
 namespace srbot\command;
 
 
+use Exception;
 use srbot\core\DB;
 use srbot\core\Telegram;
 
@@ -60,7 +61,7 @@ class Content
         $content = [
             'chat_id' => $this->chat_id,
             'reply_markup' => $this->telegram->buildInlineKeyBoard($option),
-            'text' => 'I saved it 🙂 №' . $this->content_id
+            'text' => 'I saved it!'
         ];
         $this->telegram->sendMessage($content);
     }
@@ -89,4 +90,26 @@ class Content
         $content = ['chat_id' => $this->chat_id, 'text' => $reply];
         $this->telegram->sendMessage($content);
     }
+
+    /**
+     * Sends content to a user
+     * @throws Exception
+     */
+    public function sendContent()
+    {
+        $content = $this->db->getContentPrepared($this->chat_id);
+
+        if (!empty($content)) {
+            $this->telegram->sendMessage(
+                [
+                    'chat_id' => $this->chat_id,
+                    'text' => $content['text']
+                ]
+            );
+
+            $this->db->addDateReminderContent($content['content_id']);
+        }
+    }
+
+
 }
