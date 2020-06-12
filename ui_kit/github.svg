@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!-- Generator: Gravit.io -->
+<svg xmlns="http://www.w3.org/2000/svg"
+     style="isolation:isolate" viewBox="0 0 1280 640" width="1280pt" height="640pt">
+    <defs>
+        <clipPath id="_clipPath_tzmTN7AJQb7irmB8Co7J1oYnLEBbSLfy">
+            <rect width="1280" height="640"/>
+        </clipPath>
+    </defs>
+    <g clip-path="url(#_clipPath_tzmTN7AJQb7irmB8Co7J1oYnLEBbSLfy)">
+        <rect width="1280" height="640" style="fill:rgb(58,4,218)"/>
+        <text transform="matrix(1,0,0,1,83,168.75)"
+              style="font-family:'Asap';font-weight:700;font-size:125px;font-style:normal;fill:#ffffff;stroke:none;">
+            spaced
+        </text>
+        <text transform="matrix(1,0,0,1,83,297.675)"
+              style="font-family:'Asap';font-weight:700;font-size:125px;font-style:normal;fill:#ffffff;stroke:none;">
+            repetition
+        </text>
+        <text transform="matrix(1,0,0,1,83,426.6)"
+              style="font-family:'Asap';font-weight:700;font-size:125px;font-style:normal;fill:#ffffff;stroke:none;">bot
+        </text>
+        <rect x="690" y="79" width="407.143" height="366" transform="matrix(1,0,0,1,0,0)" fill="rgb(253,114,30)"/>
+        <rect x="961" y="239" width="242.667" height="364" transform="matrix(1,0,0,1,0,0)" fill="rgb(255,184,31)"/>
+        <rect x="523.667" y="403.203" width="630.333" height="170.593" transform="matrix(1,0,0,1,0,0)"
+              fill="rgb(255,255,255)"/>
+        <text transform="matrix(1,0,0,1,561.179,474.832)"
+              style="font-family:'Asap';font-weight:700;font-size:48px;font-style:normal;fill:#3a04da;stroke:none;">
+            Telegram bot for interval
+        </text>
+        <text transform="matrix(1,0,0,1,561.179,529.84)"
+              style="font-family:'Asap';font-weight:700;font-size:48px;font-style:normal;fill:#3a04da;stroke:none;">
+            memorization of anything.
+        </text>
+    </g>
+</svg>
