@@ -51,6 +51,13 @@ class Setting
                     '/setting/change_time_zone'
                 )
             ],
+            [
+                $this->telegram->buildInlineKeyBoardButton(
+                    'Your list',
+                    $url = '',
+                    '/setting/change_list'
+                )
+            ],
         ];
 
         $content = [
@@ -164,7 +171,6 @@ class Setting
         return count($this->error) == 0;
     }
 
-
     public function set_interval()
     {
         $interval = $this->telegram->Text();
@@ -193,5 +199,110 @@ class Setting
                 'text' => 'Save interval: ' . $hour_start . ':00-' . $hour_end . ':00'
             ]
         );
+    }
+
+    public function change_list()
+    {
+        $option = [
+            [
+                $this->telegram->buildInlineKeyBoardButton(
+                    'Show all list',
+                    $url = '',
+                    '/setting/show_list'
+                )
+            ],
+            [
+                $this->telegram->buildInlineKeyBoardButton(
+                    'Clear list',
+                    $url = '',
+                    '/setting/clear_list'
+                )
+            ],
+        ];
+
+        $content = [
+            'chat_id' => $this->chat_id,
+            'reply_markup' => $this->telegram->buildInlineKeyBoard($option),
+            'text' => 'Choose to change'
+        ];
+        $this->telegram->sendMessage($content);
+    }
+
+    public function clear_list()
+    {
+        $this->db->setWaitingCommand($this->chat_id, '/setting/clear_list_confirm');
+
+        $this->telegram->sendMessage(
+            [
+                'chat_id' => $this->chat_id,
+                'text' => 'Are you sure you want to clear the whole list irrevocably?'
+                    . "\n" . 'If it is, send a "Yes" in a message.'
+            ]
+        );
+    }
+
+    public function clear_list_confirm()
+    {
+        $confirm = $this->telegram->Text();
+
+        if (trim(strtolower($confirm)) != "yes") {
+            $this->telegram->sendMessage(
+                [
+                    'chat_id' => $this->chat_id,
+                    'text' => 'The list has not been cleared.'
+                ]
+            );
+            return;
+        }
+
+        $this->db->clearAllContent($this->chat_id);
+
+        $this->telegram->sendMessage(
+            [
+                'chat_id' => $this->chat_id,
+                'text' => 'The list has been cleared.'
+            ]
+        );
+    }
+
+    public function show_list()
+    {
+        $total_length = 0;
+        $max_line_length = 30;
+        $max_message_length = 4096;
+
+        foreach ($this->db->getContents($this->chat_id) as $content) {
+            $text = $content['text'];
+
+            $total_length += mb_strlen($text);
+
+            if ($max_message_length < $total_length) {
+                $this->telegram->sendMessage(
+                    [
+                        'chat_id' => $this->chat_id,
+                        'text' => empty($contents) ? 'Your list is empty.' : implode("\n", $contents)
+                    ]
+                );
+                $total_length = 0;
+                $contents = [];
+            }
+
+            $text = remove_http($text);
+
+            if ($max_line_length < mb_strlen($text)) {
+                $text = mb_strimwidth($text, 0, $max_line_length, "...");
+            }
+
+            $contents[] = $text;
+        }
+
+        if (!isset($contents)) {
+            $this->telegram->sendMessage(
+                [
+                    'chat_id' => $this->chat_id,
+                    'text' => 'Your list is empty.'
+                ]
+            );
+        }
     }
 }

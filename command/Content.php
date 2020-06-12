@@ -41,7 +41,7 @@ class Content
                 'text' => $this->telegram->Text(),
                 'message_id' => $this->telegram->MessageID(),
                 'rating' => 0,
-                'show' => 1,
+                'display' => 1,
             ]
         );
 
@@ -90,13 +90,22 @@ class Content
 
     /**
      * Sends content to a user
+     * @param bool $now
      * @throws Exception
      */
-    public function sendContent()
+    public function sendContent(bool $answer = false)
     {
         $content = $this->db->getContentPrepared($this->chat_id);
 
         if (empty($content)) { // If there is nothing to send
+            if ($answer) {
+                $this->telegram->sendMessage(
+                    [
+                        'chat_id' => $this->chat_id,
+                        'text' => "Your message list is empty.\nI have nothing to send you."
+                    ]
+                );
+            }
             return;
         }
 

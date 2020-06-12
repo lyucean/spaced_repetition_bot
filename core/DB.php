@@ -90,11 +90,20 @@ class DB
     public function getContentPrepared($chat_id)
     {
         $this->db->where("chat_id", $chat_id);
+        $this->db->where("display", 1);
         $this->db->orderBy("date_reminder", "asc");
         $content = $this->db->get("content");
 
         // just random text
         return !empty($content) ? $content[array_rand($content)] : [];
+    }
+
+    public function getContents($chat_id)
+    {
+        $this->db->where("chat_id", $chat_id);
+        $this->db->where("display", 1);
+        $this->db->orderBy("date_reminder", "asc");
+        return $this->db->get("content");
     }
 
     /**
@@ -106,6 +115,22 @@ class DB
     {
         $this->db->where('content_id', $content_id);
         return $this->db->delete('content');
+    }
+
+    /**
+     * @param $chat_id
+     * @return bool
+     * @throws Exception
+     */
+    public function clearAllContent($chat_id)
+    {
+        $this->db->where('chat_id', $chat_id);
+        return $this->db->update(
+            'content',
+            [
+                'display' => 0
+            ]
+        );
     }
 
     /**

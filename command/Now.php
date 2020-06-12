@@ -17,6 +17,6 @@ class Now
     public function index()
     {
         // Just a redirect to Content class
-        (new  Content($this->telegram))->sendContent();
+        (new  Content($this->telegram))->sendContent(true);
     }
 }
