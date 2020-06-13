@@ -56,6 +56,8 @@ class Processing extends Model
                 // Let's look for our command
                 $action = new Action($text);
                 $action->execute($this->telegram);
+
+                ya_metric($chat_id, $text);
                 continue;
             }
 
@@ -68,6 +70,8 @@ class Processing extends Model
                 // Let's look for our command_waiting
                 $action = new Action($waiting['command']);
                 $action->execute($this->telegram);
+
+                ya_metric($chat_id, $waiting['command']);
                 continue;
             }
 

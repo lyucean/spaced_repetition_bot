@@ -37,7 +37,7 @@ if (!function_exists('get_var_query')) {
     }
 }
 
-// get query param
+// remove_http
 if (!function_exists('remove_http')) {
     /**
      * @param $url
@@ -52,6 +52,38 @@ if (!function_exists('remove_http')) {
             }
         }
         return $url;
+    }
+}
+
+// wrapper for Yandex metrics
+if (!function_exists('ya_metric')) {
+    /**
+     * @param $id
+     * @param $command
+     */
+    function ya_metric($id, $command)
+    {
+        $context = stream_context_create(
+            [
+                'http' => [
+                    'method' => 'GET',
+                    'header' => 'Accept-language: en' . PHP_EOL .
+                        'Content-Type: application/javascript' . PHP_EOL .
+                        'Cookie: foo=bar' . PHP_EOL .
+                        'User-Agent: Mozilla/5.0 (iPad; U; CPU OS 3_2 like Mac OS X; en-us)' . PHP_EOL
+                ],
+            ]
+        );
+
+        $url = 'https://mc.yandex.ru/watch/' . YANDEX_METRIC_ID;
+        $params = [
+            'wmode' => 7,
+            'page-ref' => 'telegram.org',
+            'page-url' => $command,
+            'charset' => 'utf-8',
+            'browser-info' => 'ti:10:hid:' . (800000000 + $id),
+        ];
+        @file_get_contents($url . '?' . http_build_query($params), false, $context);
     }
 }
 
