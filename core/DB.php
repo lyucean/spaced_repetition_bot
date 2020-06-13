@@ -45,7 +45,6 @@ class DB
         $this->db->update('schedule_daily', ['status_sent' => 1]);
     }
 
-
     // Schedule ---------------------------------------------------
     public function getSchedules()
     {
@@ -84,6 +83,12 @@ class DB
         $change['date_modified'] = $this->db->now();
 
         $this->db->replace('schedule', $change);
+    }
+
+    public function addSchedule($data)
+    {
+        $data['date_modified'] = $this->db->now();
+        return $this->db->replace('schedule', $data);
     }
 
     // Content ----------------------------------------------------

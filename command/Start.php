@@ -2,27 +2,47 @@
 
 namespace srbot\command;
 
+use srbot\core\DB;
 use srbot\core\Telegram;
 
 class Start
 {
     private Telegram $telegram;
     private int $chat_id = 0;
+    private DB $db;
 
     public function __construct($telegram)
     {
         $this->telegram = $telegram;
         $this->chat_id = $this->telegram->ChatID();
+        $this->db = new DB();
     }
 
     public function index()
     {
-        $reply = "Hey, the bot is in development, it's too early to use it :) " .
-            "\n I will write to you how it will be ready.";
+        $this->db->addSchedule(
+            [
+                'chat_id' => $this->chat_id,
+                'hour_start' => 9,
+                'hour_end' => 14,
+                'time_zone_offset' => 3,
+                'quantity' => 1,
+            ]
+        );
+
+        $message[] = "Hello!";
+        $message[] = "How it works: The bot sends you a message to remember every day at periodic intervals.";
+        $message[] = '';
+        $message[] = "In order to add content to remember, just send me a message.";
+        $message[] = '';
+        $message[] = "To receive a message for repetition outside the schedule, enter /now";
+        $message[] = '';
+        $message[] = "To change the settings, enter /setting";
+
         $this->telegram->sendMessage(
             [
                 'chat_id' => $this->chat_id,
-                'text' => $reply
+                'text' => implode("\n", $message)
             ]
         );
     }
