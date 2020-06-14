@@ -28,8 +28,20 @@ class Processing extends Model
             // You NEED to call serveUpdate before accessing the values of message in Telegram Class
             $this->telegram->serveUpdate($i);
 
+            // If this is editing, just edit the message
+            if ($this->telegram->getUpdateType() == 'edited_message') {
+                (new Content($this->telegram))->edit();
+                continue;
+            }
 
-            if (!in_array($this->telegram->getUpdateType(), ['message', 'callback_query', 'inline_query'])) {
+            if (!in_array(
+                $this->telegram->getUpdateType(),
+                [
+                    'message',
+                    'callback_query',
+                    'inline_query'
+                ]
+            )) {
                 (new Error($this->telegram))->send('I don\'t know how to work with this type of message.');
             }
 

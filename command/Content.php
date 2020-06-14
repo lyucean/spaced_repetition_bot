@@ -28,9 +28,27 @@ class Content
         ];
     }
 
+    public function edit()
+    {
+        $this->db->editContentByMessageId(
+            [
+                'chat_id' => $this->chat_id,
+                'text' => $this->telegram->Text(),
+                'message_id' => $this->telegram->MessageID(),
+            ]
+        );
+
+        $this->telegram->sendMessage(
+            [
+                'chat_id' => $this->chat_id,
+                'text' => 'Editing has been saved.'
+            ]
+        );
+    }
+
     public function add()
     {
-        if ('message' != $this->telegram->getUpdateType()) {
+        if (!in_array($this->telegram->getUpdateType(), ['message', 'reply_to_message'])) {
             (new Error($this->telegram))->send('This is not a message.', false);
             return;
         }
@@ -40,10 +58,18 @@ class Content
                 'chat_id' => $this->chat_id,
                 'text' => $this->telegram->Text(),
                 'message_id' => $this->telegram->MessageID(),
-                'rating' => 0,
-                'display' => 1,
             ]
         );
+
+        if (!$this->content_id) {
+            $this->telegram->sendMessage(
+                [
+                    'chat_id' => $this->chat_id,
+                    'text' => 'I could not save this message.'
+                ]
+            );
+            return;
+        }
 
         $option = [
             [
@@ -58,7 +84,7 @@ class Content
         $content = [
             'chat_id' => $this->chat_id,
             'reply_markup' => $this->telegram->buildInlineKeyBoard($option),
-            'text' => 'I saved it.'
+            'text' => 'I saved it. №' . $this->content_id
         ];
         $this->telegram->sendMessage($content);
     }

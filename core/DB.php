@@ -146,9 +146,19 @@ class DB
      */
     public function addContent($data)
     {
-        $data['date_added'] = $this->db->now();
-        $data['date_reminder'] = $this->db->now();
-        return $this->db->insert('content', $data);
+        return $this->db->insert(
+            'content',
+            [
+                'chat_id' => $data['chat_id'],
+                'text' => $this->db->escape($data['text']),
+                'image' => '',
+                'message_id' => $data['message_id'],
+                'rating' => 0,
+                'date_added' => $this->db->now(),
+                'date_reminder' => $this->db->now(),
+                'display' => 1,
+            ]
+        );
     }
 
     /**
@@ -164,6 +174,22 @@ class DB
             [
                 'date_reminder' => $this->db->now(),
                 'rating' => $this->db->inc()
+            ]
+        );
+    }
+
+    /**
+     * update Content
+     * @param $data
+     * @throws Exception
+     */
+    public function editContentByMessageId($data)
+    {
+        $this->db->where('message_id', $data['message_id']);
+        $this->db->update(
+            'content',
+            [
+                'text' => $this->db->escape($data['text'])
             ]
         );
     }
