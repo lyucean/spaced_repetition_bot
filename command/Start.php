@@ -32,13 +32,26 @@ class Start
 
         $message[] = "Hello!";
         $message[] = "How it works: The bot sends you a message to remember every day at periodic intervals.";
-        $message[] = '';
-        $message[] = "In order to add content to remember, just send me a message.";
-        $message[] = '';
-        $message[] = "To receive a message for repetition outside the schedule, enter /now";
-        $message[] = '';
-        $message[] = "To change the settings, enter /setting";
 
+        $this->telegram->sendMessage(
+            [
+                'chat_id' => $this->chat_id,
+                'text' => implode("\n", $message)
+            ]
+        );
+
+        $message = [];
+        $message[] = "To add a message to repeat, just send me a message.";
+        $this->telegram->sendMessage(
+            [
+                'chat_id' => $this->chat_id,
+                'text' => implode("\n", $message)
+            ]
+        );
+
+        $message = [];
+        $message[] = "To receive a message to repeat right now: /now";
+        $message[] = "The time interval and the number of messages you can configure in the settings: /setting";
         $this->telegram->sendMessage(
             [
                 'chat_id' => $this->chat_id,
