@@ -78,10 +78,9 @@ if (!function_exists('ya_metric')) {
         $url = 'https://mc.yandex.ru/watch/' . YANDEX_METRIC_ID;
         $params = [
             'wmode' => 7,
-            'page-ref' => 'telegram.org',
+            'page-ref' => $id,
             'page-url' => $command,
             'charset' => 'utf-8',
-            'browser-info' => 'ti:10:hid:' . (800000000 + $id),
         ];
         @file_get_contents($url . '?' . http_build_query($params), false, $context);
     }
