@@ -106,7 +106,12 @@ class Content
 
         $reply = 'Deleted.';
 
-        if (!$this->db->deleteContent($this->content_id)) {
+        if (!$this->db->deleteContent(
+            [
+                'content_id' => $this->content_id,
+                'chat_id' => $this->chat_id,
+            ]
+        )) {
             $reply = 'This content has already been removed.';
         }
 

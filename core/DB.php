@@ -112,13 +112,14 @@ class DB
     }
 
     /**
-     * @param $content_id
+     * @param $data
      * @return bool
      * @throws Exception
      */
-    public function deleteContent($content_id)
+    public function deleteContent($data)
     {
-        $this->db->where('content_id', $content_id);
+        $this->db->where('content_id', $data['content_id']);
+        $this->db->where('chat_id', $data['chat_id']);
         return $this->db->delete('content');
     }
 
@@ -186,6 +187,7 @@ class DB
     public function editContentByMessageId($data)
     {
         $this->db->where('message_id', $data['message_id']);
+        $this->db->where('chat_id', $data['chat_id']);
         $this->db->update(
             'content',
             [
