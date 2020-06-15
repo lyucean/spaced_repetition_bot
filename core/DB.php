@@ -103,6 +103,24 @@ class DB
         return !empty($content) ? $content[array_rand($content)] : [];
     }
 
+    /**
+     * @param $data
+     * @return array|MysqliDb|string
+     * @throws Exception
+     */
+    public function checkDoubleContent($data)
+    {
+        $this->db->where("text", $this->db->escape($data['text']));
+        $this->db->where("chat_id", $data['chat_id']);
+        $this->db->where("display", 1);
+        return !empty($this->db->get("content"));
+    }
+
+    /**
+     * @param $chat_id
+     * @return array|MysqliDb|string
+     * @throws Exception
+     */
     public function getContents($chat_id)
     {
         $this->db->where("chat_id", $chat_id);

@@ -53,6 +53,22 @@ class Content
             return;
         }
 
+        // double check
+        if ($this->db->checkDoubleContent(
+            [
+                'chat_id' => $this->chat_id,
+                'text' => $this->telegram->Text(),
+            ]
+        )) {
+            $this->telegram->sendMessage(
+                [
+                    'chat_id' => $this->chat_id,
+                    'text' => 'This message already exists.'
+                ]
+            );
+            return;
+        }
+
         $this->content_id = $this->db->addContent(
             [
                 'chat_id' => $this->chat_id,
