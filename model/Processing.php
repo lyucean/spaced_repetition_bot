@@ -53,8 +53,8 @@ class Processing extends Model
                 [
                     'chat_id' => $this->telegram->ChatID(),
                     'first_name' => $this->telegram->FirstName(),
-                    'last_name' => $this->telegram->LastName(),
-                    'user_name' => $this->telegram->Username(),
+                    'last_name' => $this->telegram->LastName() ?? '',
+                    'user_name' => $this->telegram->Username() ?? '',
                     'user_id' => $chat_id,
                     'text' => $text
                 ]

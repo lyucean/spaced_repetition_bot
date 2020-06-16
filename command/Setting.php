@@ -296,13 +296,11 @@ class Setting
             $contents[] = $text;
         }
 
-        if (!isset($contents)) {
-            $this->telegram->sendMessage(
-                [
-                    'chat_id' => $this->chat_id,
-                    'text' => 'Your list is empty.'
-                ]
-            );
-        }
+        $this->telegram->sendMessage(
+            [
+                'chat_id' => $this->chat_id,
+                'text' => !isset($contents) ? 'Your list is empty.' : implode("\n", $contents)
+            ]
+        );
     }
 }
