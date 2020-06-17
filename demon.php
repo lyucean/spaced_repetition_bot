@@ -15,6 +15,7 @@ while ($minute == gmdate("i")) {
     echo gmdate("i:s"), PHP_EOL;
     $processing->check();
     sleep(1);
+//    usleep(500000);
 }
 
 // Let's create a mailing list for the day.

@@ -42,6 +42,7 @@ class Start
 
         $message = [];
         $message[] = "To add a message to repeat, just send me a message.";
+        $message[] = "You can also edit any message you send in the usual way for telegrams.";
         $this->telegram->sendMessage(
             [
                 'chat_id' => $this->chat_id,
