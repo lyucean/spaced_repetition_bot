@@ -12,7 +12,7 @@ class Now
     /**
      * @var mixed
      */
-    private $chat_id;
+    private int $chat_id;
     /**
      * @var DB
      */
@@ -39,20 +39,21 @@ class Now
             return;
         }
 
-        $this->telegram->sendMessage(
+        $option = [
             [
-                'chat_id' => $this->chat_id,
-                'reply_markup' => $this->telegram->buildInlineKeyBoard(
-                    [
-                        $this->telegram->buildInlineKeyBoardButton(
-                            'Delete this',
-                            $url = '',
-                            '/content/cancel?content_id=' . $content['content_id']
-                        ),
-                    ]
+                $this->telegram->buildInlineKeyBoardButton(
+                    'Cancel add',
+                    $url = '',
+                    '/content/cancel?content_id=' . $content['content_id']
                 ),
-                'text' => $content['text']
-            ]
-        );
+            ],
+        ];
+
+        $content = [
+            'chat_id' => $this->chat_id,
+            'reply_markup' => $this->telegram->buildInlineKeyBoard($option),
+            'text' => $content['text']
+        ];
+        $this->telegram->sendMessage($content);
     }
 }

@@ -15,16 +15,28 @@ class Schedule extends Model
     public function check()
     {
         foreach ($this->db->getSendingDailyNow() as $item) {
-            $content = $this->db->getContentPrepared($this->$item['chat_id']);
+            $content = $this->db->getContentPrepared($item['chat_id']);
 
-            if ($content) {
-                $this->telegram->sendMessage(
-                    [
-                        'chat_id' => $item['chat_id'],
-                        'text' => $content['text']
-                    ]
-                );
+            if (empty($content)) {
+                continue;
             }
+
+            $option = [
+                [
+                    $this->telegram->buildInlineKeyBoardButton(
+                        'Cancel add',
+                        $url = '',
+                        '/content/cancel?content_id=' . $content['content_id']
+                    ),
+                ],
+            ];
+
+            $content = [
+                'chat_id' => $item['chat_id'],
+                'reply_markup' => $this->telegram->buildInlineKeyBoard($option),
+                'text' => $content['text']
+            ];
+            $this->telegram->sendMessage($content);
 
             $this->db->setScheduleDailyStatusSent($item['schedule_daily_id']);
         }
