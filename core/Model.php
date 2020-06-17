@@ -10,7 +10,16 @@ class Model
 
     public function __construct()
     {
-        $this->telegram = new Telegram();
+        $this->telegram = new Telegram(
+            TELEGRAM_TOKEN,
+            true,
+            [
+                'type' => PROXY_TYPE,
+                'auth' => PROXY_AUTH,
+                'url' => PROXY_IP,
+                'port' => PROXY_PORT,
+            ]
+        );
         $this->db = new DB();
     }
 }
