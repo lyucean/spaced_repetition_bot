@@ -92,15 +92,28 @@ class DB
     }
 
     // Content ----------------------------------------------------
+
+    /**
+     * Selects which content to send.
+     * @param $chat_id
+     * @return array|MysqliDb|string
+     * @throws Exception
+     */
     public function getContentPrepared($chat_id)
     {
         $this->db->where("chat_id", $chat_id);
         $this->db->where("display", 1);
         $this->db->orderBy("date_reminder", "asc");
-        $content = $this->db->get("content");
+        $content = $this->db->getOne("content");
 
-        // just random text
-        return !empty($content) ? $content[array_rand($content)] : [];
+        if (empty($content)) {
+            return [];
+        }
+
+        // Add the information that we have already shown this content
+        $this->addDateReminderContent($content['content_id']);
+
+        return $content;
     }
 
     /**

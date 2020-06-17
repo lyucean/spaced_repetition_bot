@@ -2,8 +2,6 @@
 
 namespace srbot\command;
 
-
-use Exception;
 use srbot\core\DB;
 use srbot\core\Telegram;
 
@@ -133,48 +131,5 @@ class Content
 
         $content = ['chat_id' => $this->chat_id, 'text' => $reply];
         $this->telegram->sendMessage($content);
-    }
-
-    /**
-     * Sends content to a user
-     * @param bool $now
-     * @throws Exception
-     */
-    public function sendContent(bool $answer = false)
-    {
-        $content = $this->db->getContentPrepared($this->chat_id);
-
-        if (empty($content)) { // If there is nothing to send
-            if ($answer) {
-                $this->telegram->sendMessage(
-                    [
-                        'chat_id' => $this->chat_id,
-                        'text' => "Your message list is empty.\nI have nothing to send you."
-                    ]
-                );
-            }
-            return;
-        }
-
-        // Add the information that we have already shown this content
-        $this->db->addDateReminderContent($content['content_id']);
-
-        $option = [
-            [
-                $this->telegram->buildInlineKeyBoardButton(
-                    'Delete this',
-                    $url = '',
-                    '/content/cancel?content_id=' . $content['content_id']
-                ),
-            ],
-        ];
-
-        $this->telegram->sendMessage(
-            [
-                'chat_id' => $this->chat_id,
-                'reply_markup' => $this->telegram->buildInlineKeyBoard($option),
-                'text' => $content['text']
-            ]
-        );
     }
 }

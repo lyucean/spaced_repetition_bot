@@ -4,7 +4,6 @@ namespace srbot\model;
 
 use DateTime;
 use Exception;
-use srbot\command\Content;
 use srbot\core\Model;
 
 class Schedule extends Model
@@ -16,8 +15,17 @@ class Schedule extends Model
     public function check()
     {
         foreach ($this->db->getSendingDailyNow() as $item) {
-            $this->telegram->setChatID($item['chat_id']);
-            (new Content($this->telegram))->sendContent();
+            $content = $this->db->getContentPrepared($this->$item['chat_id']);
+
+            if ($content) {
+                $this->telegram->sendMessage(
+                    [
+                        'chat_id' => $item['chat_id'],
+                        'text' => $content['text']
+                    ]
+                );
+            }
+
             $this->db->setScheduleDailyStatusSent($item['schedule_daily_id']);
         }
     }
