@@ -6,7 +6,7 @@ use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use srbot\core\DB;
-use srbot\core\Telegram;
+use Telegram;
 
 class SettingTest extends TestCase
 {

@@ -4,7 +4,7 @@ namespace srbot\command;
 
 use Exception;
 use PHPUnit\Framework\TestCase;
-use srbot\core\Telegram;
+use Telegram;
 
 class StartTest extends TestCase
 {

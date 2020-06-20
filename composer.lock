@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7c2378ac26adf39b51d3a1dad0f9c987",
+    "content-hash": "134fec60bf1649efb377a33744464584",
     "packages": [
         {
             "name": "airbrake/phpbrake",
@@ -288,6 +288,61 @@
                 "url"
             ],
             "time": "2019-07-01T23:21:34+00:00"
+        },
+        {
+            "name": "lyucean/telegram_bot_php",
+            "version": "dev-forked",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lyucean/telegram_bot_php.git",
+                "reference": "730f5ec22605dc792bb7bc18241454c6612e64b3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lyucean/telegram_bot_php/zipball/730f5ec22605dc792bb7bc18241454c6612e64b3",
+                "reference": "730f5ec22605dc792bb7bc18241454c6612e64b3",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "php": ">=5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "Telegram.php",
+                    "TelegramErrorLogger.php"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Gabriele Grillo",
+                    "email": "gabry.grillo@alice.it"
+                }
+            ],
+            "description": "A very simple PHP Telegram Bot API",
+            "support": {
+                "source": "https://github.com/lyucean/telegram_bot_php/tree/forked"
+            },
+            "funding": [
+                {
+                    "type": "liberapay",
+                    "url": "https://liberapay.com/eleirbag89"
+                },
+                {
+                    "type": "custom",
+                    "url": "https://paypal.me/eleirbag89"
+                },
+                {
+                    "type": "custom",
+                    "url": "https://flattr.com/@Eleirbag89"
+                }
+            ],
+            "time": "2020-06-20T00:06:22+00:00"
         },
         {
             "name": "psr/http-message",
@@ -968,16 +1023,16 @@
         },
         {
             "name": "phpdocumentor/type-resolver",
-            "version": "1.1.0",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/TypeResolver.git",
-                "reference": "7462d5f123dfc080dfdf26897032a6513644fc95"
+                "reference": "30441f2752e493c639526b215ed81d54f369d693"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/7462d5f123dfc080dfdf26897032a6513644fc95",
-                "reference": "7462d5f123dfc080dfdf26897032a6513644fc95",
+                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/30441f2752e493c639526b215ed81d54f369d693",
+                "reference": "30441f2752e493c639526b215ed81d54f369d693",
                 "shasum": ""
             },
             "require": {
@@ -991,7 +1046,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.x-dev"
+                    "dev-1.x": "1.x-dev"
                 }
             },
             "autoload": {
@@ -1010,7 +1065,7 @@
                 }
             ],
             "description": "A PSR-5 based resolver of Class names, Types and Structural Element Names",
-            "time": "2020-02-18T18:59:58+00:00"
+            "time": "2020-06-19T20:22:09+00:00"
         },
         {
             "name": "phpspec/prophecy",
@@ -2418,7 +2473,8 @@
     "aliases": [],
     "minimum-stability": "alpha",
     "stability-flags": {
-        "thingengineer/mysqli-database-class": 20
+        "thingengineer/mysqli-database-class": 20,
+        "lyucean/telegram_bot_php": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

@@ -3,7 +3,7 @@
 namespace srbot\command;
 
 use srbot\core\DB;
-use srbot\core\Telegram;
+use Telegram;
 
 class Start
 {

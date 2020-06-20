@@ -5,7 +5,7 @@ namespace srbot\command;
 use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use srbot\core\Telegram;
+use Telegram;
 
 /**
  * Class ContentTest

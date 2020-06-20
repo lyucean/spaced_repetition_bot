@@ -4,7 +4,7 @@
 namespace srbot\command;
 
 use Exception;
-use srbot\core\Telegram;
+use Telegram;
 
 class Error
 {
