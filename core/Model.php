@@ -2,6 +2,7 @@
 
 
 namespace srbot\core;
+use Telegram;
 
 class Model
 {
