@@ -76,8 +76,8 @@ if (!function_exists('ya_metric')) {
         );
 
         //
-        if ($str = strpos($command, "?") !== false) {
-            $command = substr($command, 0, '?');
+        if ($str_pos = strpos($command, "?") !== false) {
+            $command = substr($command, 0, $str_pos);
         }
 
         $url = 'https://mc.yandex.ru/watch/' . YANDEX_METRIC_ID;
