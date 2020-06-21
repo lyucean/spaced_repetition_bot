@@ -44,10 +44,58 @@ class Content
         );
     }
 
+    public function addImage()
+    {
+//        $this->db->editContentByMessageId(
+//            [
+//                'chat_id' => $this->chat_id,
+//                'text' => $this->telegram->Text(),
+//                'message_id' => $this->telegram->MessageID(),
+//            ]
+//        );
+
+        // take the highest resolution
+        $array = $this->telegram->Photo();
+        $file = $this->telegram->getFile(array_pop($array)['file_id']);
+
+        if (!array_key_exists('ok', $file) || !array_key_exists('result', $file)) {
+            (new Error($this->telegram))->send('I could not download the picture, the server is unavailable.');
+        }
+
+        $file_path = $file['result']['file_path'];
+        $file_name = $file['result']['file_unique_id'] . '.jpg';
+
+        $url_on_server = 'https://api.telegram.org/file/bot' . TELEGRAM_TOKEN . '/' . $file_path;
+
+        $folder = rand(10, 999) . '/';
+
+        if (!is_dir(DIR_FILE . $folder)) {
+            mkdir(DIR_FILE . $folder);
+        }
+
+        file_put_contents(DIR_FILE . $folder . $file_name, file_get_contents($url_on_server));
+
+        $this->content_id = $this->db->addContent(
+            [
+                'chat_id' => $this->chat_id,
+                'text' => $this->telegram->Caption(),
+                'image' => $folder . $file_name,
+                'message_id' => $this->telegram->MessageID(),
+            ]
+        );
+
+        $this->telegram->sendMessage(
+            [
+                'chat_id' => $this->chat_id,
+                'text' => 'I saved the image 😉'
+            ]
+        );
+    }
+
     public function add()
     {
         if (!in_array($this->telegram->getUpdateType(), ['message', 'reply_to_message'])) {
-            (new Error($this->telegram))->send('This is not a message.', false);
+            (new Error($this->telegram))->send('I don\'t know how to work with this type of message.');
             return;
         }
 

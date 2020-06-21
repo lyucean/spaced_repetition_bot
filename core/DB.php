@@ -183,7 +183,7 @@ class DB
             [
                 'chat_id' => $data['chat_id'],
                 'text' => $this->db->escape($data['text']),
-                'image' => '',
+                'image' => $data['image'] ?? '',
                 'message_id' => $data['message_id'],
                 'rating' => 0,
                 'date_added' => $this->db->now(),

@@ -4,7 +4,6 @@
 namespace srbot\model;
 
 use srbot\command\Content;
-use srbot\command\Error;
 use srbot\core\Action;
 use srbot\core\Model;
 
@@ -34,15 +33,10 @@ class Processing extends Model
                 continue;
             }
 
-            if (!in_array(
-                $this->telegram->getUpdateType(),
-                [
-                    'message',
-                    'callback_query',
-                    'inline_query'
-                ]
-            )) {
-                (new Error($this->telegram))->send('I don\'t know how to work with this type of message.');
+            // If this is image
+            if ($this->telegram->getUpdateType() == 'photo') {
+                (new Content($this->telegram))->addImage();
+                continue;
             }
 
             $text = $this->telegram->Text();
