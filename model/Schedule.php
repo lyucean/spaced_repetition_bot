@@ -21,19 +21,31 @@ class Schedule extends Model
                 continue;
             }
 
-            $option = [
-                [
-                    $this->telegram->buildInlineKeyBoardButton(
-                        'Cancel add',
-                        $url = '',
-                        '/content/cancel?content_id=' . $content['content_id']
-                    ),
-                ],
-            ];
+            if (!empty($content['image'])) {
+                $img = curl_file_create(DIR_FILE . $content['image'], 'image/jpeg');
+                $this->telegram->sendPhoto(
+                    [
+                        'chat_id' => $item['chat_id'],
+                        'photo' => $img,
+                        'caption' => $content['text']
+                    ]
+                );
+                return;
+            }
 
             $content = [
                 'chat_id' => $item['chat_id'],
-                'reply_markup' => $this->telegram->buildInlineKeyBoard($option),
+//                'reply_markup' => $this->telegram->buildInlineKeyBoard(
+//                    [
+//                        [
+//                            $this->telegram->buildInlineKeyBoardButton(
+//                                'Delete this',
+//                                $url = '',
+//                                '/content/cancel?content_id=' . $content['content_id']
+//                            ),
+//                        ],
+//                    ]
+//                ),
                 'text' => $content['text']
             ];
             $this->telegram->sendMessage($content);

@@ -39,21 +39,36 @@ class Now
             return;
         }
 
-        $option = [
-            [
-                $this->telegram->buildInlineKeyBoardButton(
-                    'Cancel add',
-                    $url = '',
-                    '/content/cancel?content_id=' . $content['content_id']
-                ),
-            ],
-        ];
+        if (!empty($content['image'])) {
+            $img = curl_file_create(DIR_FILE . $content['image'], 'image/jpeg');
+            $this->telegram->sendPhoto(
+                [
+                    'chat_id' => $this->chat_id,
+                    'photo' => $img,
+                    'caption' => $content['text']
+                ]
+            );
+            return;
+        }
 
-        $content = [
-            'chat_id' => $this->chat_id,
-            'reply_markup' => $this->telegram->buildInlineKeyBoard($option),
-            'text' => $content['text']
-        ];
-        $this->telegram->sendMessage($content);
+
+        $this->telegram->sendMessage(
+            [
+                'chat_id' => $this->chat_id,
+
+//                'reply_markup' => $this->telegram->buildInlineKeyBoard(
+//                    [
+//                        [
+//                            $this->telegram->buildInlineKeyBoardButton(
+//                                'Delete this',
+//                                $url = '',
+//                                '/content/cancel?content_id=' . $content['content_id']
+//                            ),
+//                        ],
+//                    ]
+//                ),
+                'text' => $content['text']
+            ]
+        );
     }
 }
