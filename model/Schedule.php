@@ -21,13 +21,15 @@ class Schedule extends Model
                 continue;
             }
 
+            $message = $content['text'] . ' #' . HASHTAG_PREFIX . $content['content_id'];
+
             if (!empty($content['image'])) {
                 $img = curl_file_create(DIR_FILE . $content['image'], 'image/jpeg');
                 $this->telegram->sendPhoto(
                     [
                         'chat_id' => $item['chat_id'],
                         'photo' => $img,
-                        'caption' => $content['text']
+                        'caption' => $message
                     ]
                 );
                 return;
@@ -46,7 +48,7 @@ class Schedule extends Model
 //                        ],
 //                    ]
 //                ),
-                'text' => $content['text']
+                'text' => $message
             ];
             $this->telegram->sendMessage($content);
 

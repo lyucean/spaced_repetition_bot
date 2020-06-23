@@ -39,13 +39,15 @@ class Now
             return;
         }
 
+        $message = $content['text'] . ' #' . HASHTAG_PREFIX . $content['content_id'];
+
         if (!empty($content['image'])) {
             $img = curl_file_create(DIR_FILE . $content['image'], 'image/jpeg');
             $this->telegram->sendPhoto(
                 [
                     'chat_id' => $this->chat_id,
                     'photo' => $img,
-                    'caption' => $content['text']
+                    'caption' => $message
                 ]
             );
             return;
@@ -67,7 +69,7 @@ class Now
 //                        ],
 //                    ]
 //                ),
-                'text' => $content['text']
+                'text' => $message
             ]
         );
     }
