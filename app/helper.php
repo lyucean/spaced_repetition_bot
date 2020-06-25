@@ -37,21 +37,35 @@ if (!function_exists('get_var_query')) {
     }
 }
 
-// remove_http
-if (!function_exists('remove_http')) {
+// short_line_for_md
+if (!function_exists('short_line_for_md')) {
     /**
-     * @param $url
+     * @param string $str
+     * @param int $max_line_length
      * @return string|string[]
      */
-    function remove_http($url)
+    function short_line_for_md(string $str, int $max_line_length = 1000)
     {
-        $disallowed = array('http://', 'https://', 'http://www.', 'https://www.');
+        $disallowed = array('https://www.', 'http://www.', 'https://', 'http://', 'www.');
         foreach ($disallowed as $d) {
-            if (strpos($url, $d) === 0) {
-                return str_replace($d, '', $url);
+            if (strpos($str, $d) === 0) {
+                $text = str_replace($d, '', $str);
+
+//                $host = parse_url($text)['host'];
+
+                if ($max_line_length < mb_strlen($text)) {
+                    $text = mb_strimwidth($text, 0, $max_line_length, "...");
+                }
+
+                return '[' . $text . '](' . $str . ')';
             }
         }
-        return $url;
+
+        if ($max_line_length < mb_strlen($str)) {
+            $str = mb_strimwidth($str, 0, $max_line_length, "...");
+        }
+
+        return $str;
     }
 }
 
