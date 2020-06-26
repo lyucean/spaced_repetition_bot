@@ -17,7 +17,8 @@
     "thingengineer/mysqli-database-class": "dev-master",
     "ext-mbstring": "*",
     "airbrake/phpbrake": "^0.7.3",
-    "lyucean/telegram_bot_php": "dev-forked"
+    "lyucean/telegram_bot_php": "dev-forked",
+    "ext-iconv": "*"
   },
   "autoload": {
     "psr-4": {

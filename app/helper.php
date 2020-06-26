@@ -37,35 +37,115 @@ if (!function_exists('get_var_query')) {
     }
 }
 
-// short_line_for_md
-if (!function_exists('short_line_for_md')) {
-    /**
-     * @param string $str
-     * @param int $max_line_length
-     * @return string|string[]
-     */
-    function short_line_for_md(string $str, int $max_line_length = 1000)
+// shorten_line
+if (!function_exists('shorten_line')) {
+    function shorten_line(string $text)
     {
-        $disallowed = array('https://www.', 'http://www.', 'https://', 'http://', 'www.');
-        foreach ($disallowed as $d) {
-            if (strpos($str, $d) === 0) {
-                $text = str_replace($d, '', $str);
+        if (is_url($text)) {
+            return shorten_link($text);
+        }
 
-//                $host = parse_url($text)['host'];
+        return shorten_text($text);
+    }
+}
 
-                if ($max_line_length < mb_strlen($text)) {
-                    $text = mb_strimwidth($text, 0, $max_line_length, "...");
-                }
+// is_url
+if (!function_exists('is_url')) {
+    function is_url(string $text)
+    {
+        return (bool)preg_match('~^(?:(https?)://([^\s<]+)|(www\.[^\s<]+?\.[^\s<]+))(?<![.,:])~i', $text);
+    }
+}
 
-                return '[' . $text . '](' . $str . ')';
+// shorten_text
+if (!function_exists('shorten_text')) {
+    function shorten_text(string $text, int $max_line_length = MAX_LINE_LENGTH)
+    {
+        // cut www.
+        $text = str_replace("www.", "", $text);
+
+        // cut ...
+        $text = str_replace("...", "", $text);
+
+        // cut to length
+        if ($max_line_length < iconv_strlen($text, 'UTF-8')) {
+            $text = mb_strimwidth($text, 0, $max_line_length, "...");
+        }
+
+        return $text;
+    }
+}
+
+// shorten_link
+if (!function_exists('shorten_link')) {
+    function shorten_link($value, $protocols = array('https', 'http', 'mail'))
+    {
+        $links = array();
+
+        // Extract existing links and tags
+        $value = preg_replace_callback(
+            '~(<a .*?>.*?</a>|<.*?>)~i',
+            function ($match) use (&$links) {
+                return '<' . array_push($links, $match[1]) . '>';
+            },
+            $value
+        );
+
+        // Extract text links for each protocol
+        foreach ((array)$protocols as $protocol) {
+            switch ($protocol) {
+                case 'http':
+                case 'https':
+                    $value = preg_replace_callback(
+                        '~(?:(https?)://([^\s<]+)|(www\.[^\s<]+?\.[^\s<]+))(?<![.,:])~i',
+                        function ($match) use ($protocol, &$links) {
+                            if ($match[1]) {
+                                $protocol = $match[1];
+                            }
+                            $link = $match[2] ?: $match[3];
+                            return '<' . array_push(
+                                    $links,
+                                    "<a href=\"$protocol://$link\">" . shorten_text($link) . "</a>"
+                                ) . '>';
+                        },
+                        $value
+                    );
+                    break;
+                case 'mail':
+                    $value = preg_replace_callback(
+                        '~([^\s<]+?@[^\s<]+?\.[^\s<]+)(?<![.,:])~',
+                        function ($match) use (&$links) {
+                            return '<' . array_push(
+                                    $links,
+                                    "<a href=\"mailto:{$match[1]}\">" . shorten_text($match[1]) . "</a>"
+                                ) . '>';
+                        },
+                        $value
+                    );
+                    break;
+                default:
+                    $value = preg_replace_callback(
+                        '~' . preg_quote($protocol, '~') . '://([^\s<]+?)(?<![.,:])~i',
+                        function ($match) use ($protocol, &$links) {
+                            return '<' . array_push(
+                                    $links,
+                                    "<a href=\"$protocol://{$match[1]}\">" . shorten_text($match[1]) . "</a>"
+                                ) . '>';
+                        },
+                        $value
+                    );
+                    break;
             }
         }
 
-        if ($max_line_length < mb_strlen($str)) {
-            $str = mb_strimwidth($str, 0, $max_line_length, "...");
-        }
-
-        return $str;
+        // Insert all link
+        return preg_replace_callback(
+            '/<(\d+)>/',
+            function ($match) use (&$links) {
+                return $links[$match[1] - 1];
+            },
+            $value
+        );
     }
 }
 
