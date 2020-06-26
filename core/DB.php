@@ -138,8 +138,21 @@ class DB
     {
         $this->db->where("chat_id", $chat_id);
         $this->db->where("display", 1);
-        $this->db->orderBy("date_reminder", "asc");
+        $this->db->orderBy("date_reminder", "desc");
         return $this->db->get("content");
+    }
+
+    /**
+     * @param $content_id
+     * @return array|MysqliDb|string
+     * @throws Exception
+     */
+    public function getContent($content_id)
+    {
+        $this->db->where("content_id", (int)$content_id);
+        $this->db->where("display", 1);
+
+        return $this->db->getOne("content");
     }
 
     /**

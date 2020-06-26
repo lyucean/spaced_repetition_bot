@@ -208,7 +208,7 @@ class Setting
                 $this->telegram->buildInlineKeyBoardButton(
                     'Show all list',
                     $url = '',
-                    '/setting/show_list'
+                    '/catalog'
                 )
             ],
             [
@@ -261,45 +261,6 @@ class Setting
             [
                 'chat_id' => $this->chat_id,
                 'text' => 'The list has been cleared.'
-            ]
-        );
-    }
-
-    public function show_list()
-    {
-        $total_length = 0;
-        $max_line_length = 30;
-        $max_message_length = 4096;
-
-        foreach ($this->db->getContents($this->chat_id) as $content) {
-            $text = $content['text'];
-
-            $total_length += mb_strlen($text);
-
-            if ($max_message_length < $total_length) {
-                $this->telegram->sendMessage(
-                    [
-                        'chat_id' => $this->chat_id,
-                        'text' => empty($contents) ? 'Your list is empty.' : implode("\n", $contents)
-                    ]
-                );
-                $total_length = 0;
-                $contents = [];
-            }
-
-            $text = remove_http($text);
-
-            if ($max_line_length < mb_strlen($text)) {
-                $text = mb_strimwidth($text, 0, $max_line_length, "...");
-            }
-
-            $contents[] = $text;
-        }
-
-        $this->telegram->sendMessage(
-            [
-                'chat_id' => $this->chat_id,
-                'text' => !isset($contents) ? 'Your list is empty.' : implode("\n", $contents)
             ]
         );
     }

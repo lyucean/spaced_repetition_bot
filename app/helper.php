@@ -39,6 +39,10 @@ if (!function_exists('get_var_query')) {
 
 // shorten_line
 if (!function_exists('shorten_line')) {
+    /**
+     * @param string $text
+     * @return string|string[]|null
+     */
     function shorten_line(string $text)
     {
         if (is_url($text)) {
@@ -51,6 +55,10 @@ if (!function_exists('shorten_line')) {
 
 // is_url
 if (!function_exists('is_url')) {
+    /**
+     * @param string $text
+     * @return bool
+     */
     function is_url(string $text)
     {
         return (bool)preg_match('~^(?:(https?)://([^\s<]+)|(www\.[^\s<]+?\.[^\s<]+))(?<![.,:])~i', $text);
@@ -59,6 +67,11 @@ if (!function_exists('is_url')) {
 
 // shorten_text
 if (!function_exists('shorten_text')) {
+    /**
+     * @param string $text
+     * @param int $max_line_length
+     * @return string|string[]
+     */
     function shorten_text(string $text, int $max_line_length = MAX_LINE_LENGTH)
     {
         // cut www.
@@ -78,6 +91,11 @@ if (!function_exists('shorten_text')) {
 
 // shorten_link
 if (!function_exists('shorten_link')) {
+    /**
+     * @param $value
+     * @param string[] $protocols
+     * @return string|string[]|null
+     */
     function shorten_link($value, $protocols = array('https', 'http', 'mail'))
     {
         $links = array();

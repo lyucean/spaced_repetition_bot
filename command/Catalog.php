@@ -26,44 +26,70 @@ class Catalog
         $this->db = new DB();
     }
 
-    public function index()
+    protected function send($message)
     {
-        $total_length = 0;
-        $max_line_length = 30;
-        $max_message_length = 4096;
-
-        foreach ($this->db->getContents($this->chat_id) as $content) {
-            $text = $content['text'];
-            $id = $content['content_id'];
-
-            $total_length += mb_strlen($text);
-
-            if ($max_message_length < $total_length) {
-                $this->telegram->sendMessage(
-                    [
-                        'chat_id' => $this->chat_id,
-                        'text' => empty($contents) ? 'Your list is empty.' : implode("\n", $contents)
-                    ]
-                );
-                $total_length = 0;
-                $contents = [];
-            }
-
-            $text = remove_http($text);
-
-            if ($max_line_length < mb_strlen($text)) {
-                $text = mb_strimwidth($text, 0, $max_line_length, "...");
-            }
-
-            $contents[] = '#' . HASHTAG_PREFIX . $id . ' ' . $text;
+        if (empty($message)) {
+            return;
         }
 
         $this->telegram->sendMessage(
             [
                 'chat_id' => $this->chat_id,
-                'text' => !isset($contents) ? 'Your list is empty.' : implode("\n", $contents)
+                'text' => $message,
+                'disable_web_page_preview' => true,
+                'parse_mode' => 'html'
             ]
         );
+    }
+
+    /**
+     * forms a list of messages to send
+     * @param $contents
+     * @return array
+     */
+    public function preparation($contents)
+    {
+        $message = [];
+
+        foreach ($contents as $content) {
+            $text = $content['text'];
+            $image = $content['image'];
+
+            if (!empty($text)) {
+                $text = shorten_line($content['text']);
+            }
+            if (!empty($image)) {
+                $text = ' This is a picture: ' . '/get_' . $content['content_id'];
+            }
+            $text = "<b>№" . $content['content_id'] . '</b> - ' . $text . "\n";
+            $message[] = $text;
+        }
+
+        return $message;
+    }
+
+    public function index()
+    {
+        $contents = $this->db->getContents($this->chat_id);
+
+        if (empty($contents)) {
+            $this->send('Your list is empty.');
+            return;
+        }
+
+        $max_message_length = 4000;
+        $message = '';
+
+        foreach ($this->preparation($contents) as $row) {
+            if ($max_message_length < mb_strlen($message . $row)) {
+                $this->send($message);
+                $message = '';
+            }
+
+            $message .= $row;
+        }
+
+        $this->send($message);
     }
 
 }
