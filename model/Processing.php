@@ -4,6 +4,7 @@
 namespace srbot\model;
 
 use srbot\command\Content;
+use srbot\command\Now;
 use srbot\core\Action;
 use srbot\core\Model;
 
@@ -58,6 +59,12 @@ class Processing extends Model
             if (mb_substr($text, 0, 1, 'UTF-8') == '/') {
                 // Clear command_waiting
                 $this->db->cleanWaitingCommand($chat_id);
+
+                // if it is a request for a specific message
+                if (mb_substr($text, 0, 5, 'UTF-8') == '/get_') {
+                    (new Now($this->telegram))->get(substr(strrchr($text, "_"), 1));
+                    continue;
+                }
 
                 // Let's look for our command
                 $action = new Action($text);

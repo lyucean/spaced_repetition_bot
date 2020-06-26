@@ -38,8 +38,32 @@ class Now
             );
             return;
         }
+        $this->send($content);
+    }
 
-        $message = $content['text'] . ' #' . HASHTAG_PREFIX . $content['content_id'];
+    public function get($content_id)
+    {
+        if (empty($content_id)) {
+            (new Error($this->telegram))->send('I did not find message.');
+        }
+
+        $content = $this->db->getContent($content_id);
+
+        if (empty($content)) { // If there is nothing to send
+            $this->telegram->sendMessage(
+                [
+                    'chat_id' => $this->chat_id,
+                    'text' => "No such message found."
+                ]
+            );
+            return;
+        }
+        $this->send($content);
+    }
+
+    protected function send($content)
+    {
+        $message = $content['text'] . ' №' . $content['content_id'];
 
         if (!empty($content['image'])) {
             $img = curl_file_create(DIR_FILE . $content['image'], 'image/jpeg');
@@ -52,7 +76,6 @@ class Now
             );
             return;
         }
-
 
         $this->telegram->sendMessage(
             [
