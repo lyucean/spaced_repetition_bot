@@ -59,9 +59,9 @@ class Catalog
                 $text = shorten_line($content['text']);
             }
             if (!empty($image)) {
-                $text = ' This is a picture: ' . '/get_' . $content['content_id'];
+                $text = ' This is a picture: ' . '/_' . $content['content_id'];
             }
-            $text = "<b>№" . $content['content_id'] . '</b> - ' . $text . "\n";
+            $text = '/_' . $content['content_id'] . ' - ' . $text . "\n";
             $message[] = $text;
         }
 
