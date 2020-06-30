@@ -4,7 +4,7 @@ if (OC_ENV_PROD) {
     $notifier = new Airbrake\Notifier(
         array(
             'projectId' => AIR_BRAKE_PROJECT_ID,
-            "environment" => ENVIRONMENT,
+            "environment" => NAME_PROJECT,
             'projectKey' => AIR_BRAKE_PROJECT_KEY
         )
     );
