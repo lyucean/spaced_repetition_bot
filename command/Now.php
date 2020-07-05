@@ -63,7 +63,7 @@ class Now
 
     protected function send($content)
     {
-        $message = $content['text'] . ' №' . $content['content_id'];
+        $message = $content['text'] . ' /_' . $content['content_id'];
 
         if (!empty($content['image'])) {
             $img = curl_file_create(DIR_FILE . $content['image'], 'image/jpeg');

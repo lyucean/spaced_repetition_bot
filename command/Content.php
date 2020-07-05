@@ -146,7 +146,7 @@ class Content
         $content = [
             'chat_id' => $this->chat_id,
             'reply_markup' => $this->telegram->buildInlineKeyBoard($option),
-            'text' => 'I saved it. №' . $this->content_id
+            'text' => 'I saved it. /_' . $this->content_id
         ];
         $this->telegram->sendMessage($content);
     }
