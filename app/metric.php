@@ -22,7 +22,7 @@ function ya_metric($id, $command)
     );
 
     // cut parameters
-    if (preg_match('/^\/_[0-9]$/', $command)) {
+    if (preg_match('/^\/_[0-9]+$/', $command)) {
         $command = '/_';
     }
 
